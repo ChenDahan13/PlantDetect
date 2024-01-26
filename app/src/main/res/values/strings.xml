@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Shroomer</string>
+
+    <string-array name="Users">
+        <item>Amateur</item>
+        <item>Expert</item>
+    </string-array>
+</resources>
