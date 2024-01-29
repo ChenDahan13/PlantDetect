@@ -6,6 +6,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
+import android.view.View
+
 
 class SignUpPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,19 +20,41 @@ class SignUpPage : AppCompatActivity() {
         // Access the spinner
         val spinner: Spinner = findViewById(R.id.spinner)
         if (spinner != null) {
+            println("Spinner isn't null")
             val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, users_options)
             spinner.adapter = adapter
+            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    when (position) {
+                        0 -> {
+                            // for Amateur
+                            Toast.makeText(this@SignUpPage, "Amateur user", Toast.LENGTH_SHORT)
+                                .show()
+                        }
 
-           /* spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val selectedUser = users_options[position]
-                    if (selectedUser.equals("Expert")) {
-                        Toast.makeText(this,"Upload certificate", Toast.LENGTH_SHORT).show()
+                        1 -> {
+                            // For expert
+                            Toast.makeText(
+                                this@SignUpPage,
+                                "Please add certificate",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
-            } */
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    Toast.makeText(this@SignUpPage, "Did not select option", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
         } else {
-            println("Error to access the spinner")
+            println("Error with the spinner")
         }
 
     }
