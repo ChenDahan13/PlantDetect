@@ -2,14 +2,11 @@ package com.example.shroomer
 
 import java.util.LinkedList
 
-class Post {
-    private lateinit var title: String
-    private lateinit var comments: LinkedList<Long>
-    private var user_id: Long = 0
+class Post(private var title: String, private var user_id: Long) {
 
-    constructor(title: String, user_id: Long) {
-        this.title = title
-        this.user_id = user_id
+    private lateinit var comments: LinkedList<Long>
+
+    init {
         this.comments = LinkedList()
     }
 }
