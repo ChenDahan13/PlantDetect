@@ -2,8 +2,8 @@ package com.example.shroomer
 
 import java.util.LinkedList
 
-class Amateur(name: String, email: String, password: String, user_id: Long, token: Int) :
-    User(name, email, password, user_id, token) {
+class Amateur(name: String, email: String, password: String, user_id: String) :
+    User(name, email, password, user_id) {
 
         private var posts: LinkedList<Long>
 

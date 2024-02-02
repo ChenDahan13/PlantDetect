@@ -23,6 +23,7 @@
         android:layout_gravity="center"/>
 
     <EditText
+        android:id="@+id/loginusername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -30,12 +31,13 @@
         android:background="@drawable/shapeemail"
         android:drawableLeft="@drawable/baseline_person_24"
         android:drawablePadding="10dp"
-        android:hint="Email"
+        android:hint="Username"
         android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:textColorHighlight="@color/black"/>
 
     <EditText
+        android:id="@+id/loginpassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

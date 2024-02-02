@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "460021877574",
+    "project_id": "shroomer-ed4d9",
+    "storage_bucket": "shroomer-ed4d9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:460021877574:android:2325f569c61db8d04b7347",
+        "android_client_info": {
+          "package_name": "com.example.shroomer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoZ6HcWjn5qzUP14sdn2JxZMcE-AALNTk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

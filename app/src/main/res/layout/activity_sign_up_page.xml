@@ -10,6 +10,7 @@
     android:background="@drawable/signuppage">
 
     <EditText
+        android:id="@+id/signupusername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -17,12 +18,27 @@
         android:background="@drawable/shapeemail"
         android:drawableLeft="@drawable/baseline_person_24"
         android:drawablePadding="10dp"
+        android:hint="Username"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textColorHighlight="@color/black"/>
+
+    <EditText
+        android:id="@+id/signupemail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="15dp"
+        android:background="@drawable/shapeemail"
+        android:drawableLeft="@drawable/baseline_alternate_email_24"
+        android:drawablePadding="10dp"
         android:hint="Email"
         android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:textColorHighlight="@color/black"/>
 
     <EditText
+        android:id="@+id/signuppassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -36,6 +52,7 @@
         android:textColorHighlight="@color/black"/>
 
     <EditText
+        android:id="@+id/signupconfirmpassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
