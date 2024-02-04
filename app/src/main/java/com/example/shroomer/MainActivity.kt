@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                 if (snapshot.exists()) {
                     for (amateurUser in snapshot.children) {
                         val userPassword = amateurUser.child("password").getValue(String::class.java)
-                        if (userPassword == password) { // If the user exists, set the isExist variable to 1
+                        if (userPassword == password) { // If the user password is right, set the isExist variable to 1
                             isExist = 1
                         }
                     }
@@ -76,14 +76,16 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
-
+        if (isExist == 1) { // The user exists in the amateur database
+            return isExist
+        }
         databaseReferenceExpert.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) { // Check if the user exists in the expert database
                 if (snapshot.exists()) {
                     for (expertUser in snapshot.children) {
                         val userPassword = expertUser.child("password").getValue(String::class.java)
-                        if (userPassword == password) { // If the user exists, set the isExist variable to 1
+                        if (userPassword == password) { // If the user password is right, set the isExist variable to 1
                             isExist = 1
                         }
                     }
