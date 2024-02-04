@@ -43,7 +43,7 @@ class SignUpPage : AppCompatActivity() {
             val email = binding.signupemail.text.toString()
             val password = binding.signuppassword.text.toString()
             val confirmPassword = binding.signupconfirmpassword.text.toString()
-            val selectedItem = spinner.selectedItem.toString()
+            val selectedItem = spinner.selectedItem.toString() // Get the selected item from the spinner
             // Check if the fields are empty
             if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT).show()
@@ -54,13 +54,52 @@ class SignUpPage : AppCompatActivity() {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            // Check if the user is an amateur or an expert
-            if (selectedItem == "Amateur") {
-                signUpAmateur(username, email, password)
-            } else {
-                signUpExpert(username, email, password)
+            // Check if the username exists
+            isExistUsername(username) { isExist ->
+                if (isExist) {
+                    Toast.makeText(this, "Username already exists", Toast.LENGTH_SHORT).show()
+                } else { // Username does not exist
+                    // Check if the user is an amateur or an expert
+                    if (selectedItem == "Amateur") {
+                        signUpAmateur(username, email, password)
+                    } else {
+                        signUpExpert(username, email, password)
+                    }
+                }
             }
         }
+    }
+
+    // Function to check if the username exists
+    private fun isExistUsername(username: String, callback: (Boolean) -> Unit) {
+        // Check if the username exists in the amateur database
+        databaseReferenceAmateur.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    callback(true)
+                } else {
+                    // Check if the username exists in the expert database
+                    databaseReferenceExpert.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(object :
+                        ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if (snapshot.exists()) {
+                                callback(true)
+                            } else {
+                                callback(false)
+                            }
+                        }
+                        override fun onCancelled(error: DatabaseError) {
+                            callback(false)
+                        }
+                    })
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                callback(false)
+            }
+        })
+
     }
 
     private fun spinnerChoice() {

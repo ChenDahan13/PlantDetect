@@ -69,7 +69,9 @@ class MainActivity : AppCompatActivity() {
                         val userPassword = amateurUser.child("password").getValue(String::class.java)
                         if (userPassword == password) { // If the user password is right, set the isExist variable to 1
                             isExist = true
-                            Toast.makeText(this@MainActivity,"existing in amateur, isexist = $isExist", Toast.LENGTH_SHORT).show()
+                            callback(isExist)
+                            return
+                        } else { // Password is wrong
                             callback(isExist)
                             return
                         }
@@ -89,11 +91,15 @@ class MainActivity : AppCompatActivity() {
                         val userPassword = expertUser.child("password").getValue(String::class.java)
                         if (userPassword == password) { // If the user password is right, set the isExist variable to 1
                             isExist = true
-                            Toast.makeText(this@MainActivity,"existing in expert, isexist = $isExist", Toast.LENGTH_SHORT).show()
+                            callback(isExist)
+                            return
+                        } else { // Password is wrong
                             callback(isExist)
                             return
                         }
                     }
+                } else {
+                    callback(isExist)
                 }
             }
             override fun onCancelled(error: DatabaseError) {
