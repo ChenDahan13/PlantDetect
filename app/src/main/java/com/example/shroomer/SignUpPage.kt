@@ -93,7 +93,7 @@ class SignUpPage : AppCompatActivity() {
         return choice
     }
 
-    // Function to sign up the amateur user
+    // Function to sign up the user
     private fun signUpUser(username: String, email: String, password: String, choice: Int) {
         databaseReferenceAmateur.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(object :
             ValueEventListener {
