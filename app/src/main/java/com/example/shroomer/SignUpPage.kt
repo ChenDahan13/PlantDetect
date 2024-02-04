@@ -22,7 +22,7 @@ class SignUpPage : AppCompatActivity() {
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var databaseReferenceAmateur: DatabaseReference
     private lateinit var databaseReferenceExpert: DatabaseReference
-
+    private lateinit var spinner: Spinner
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpPageBinding.inflate(layoutInflater)
@@ -32,6 +32,12 @@ class SignUpPage : AppCompatActivity() {
         databaseReferenceAmateur = firebaseDatabase.reference.child("Amateur")
         databaseReferenceExpert = firebaseDatabase.reference.child("Expert")
         var choice: Int = 0
+        val users_options = resources.getStringArray(R.array.Users)
+        // Access the spinner
+        spinner = findViewById(R.id.spinner)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, users_options)
+        spinner.adapter = adapter
+        choice = spinnerChoice()
         binding.signupButton.setOnClickListener {
             // Get the user input
             val username = binding.signupusername.text.toString()
@@ -48,7 +54,7 @@ class SignUpPage : AppCompatActivity() {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            choice = spinnerChoice()
+            println("Clicking on the sign up button and the choice is $choice")
             signUpUser(username, email, password, choice)
         }
     }
@@ -56,11 +62,6 @@ class SignUpPage : AppCompatActivity() {
     private fun spinnerChoice(): Int {
         var choice: Int = 0
         // Access the items of the list
-        val users_options = resources.getStringArray(R.array.Users)
-        // Access the spinner
-        val spinner: Spinner = findViewById(R.id.spinner)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, users_options)
-        spinner.adapter = adapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -74,6 +75,7 @@ class SignUpPage : AppCompatActivity() {
                         Toast.makeText(this@SignUpPage, "Amateur user", Toast.LENGTH_SHORT)
                             .show()
                         choice = 0
+                        println("this choice is 0")
                     }
                     1 -> {
                         // For expert
@@ -83,6 +85,7 @@ class SignUpPage : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         choice = 1
+                        println("this choice is 1")
                     }
                 }
             }
@@ -106,13 +109,14 @@ class SignUpPage : AppCompatActivity() {
                     var user: User? = null
                     if (choice == 0) {// If the user is an amateur
                         user = Amateur(username, email, password, primraryKey.toString())
+                        Toast.makeText(this@SignUpPage, "Amateur user created", Toast.LENGTH_SHORT).show()
                     } else if (choice == 1) { // If the user is an expert
                         user = Expert(username, email, password, primraryKey.toString())
+                        Toast.makeText(this@SignUpPage, "Expert user created", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(this@SignUpPage, "Invalid choice", Toast.LENGTH_SHORT).show()
                     }
                     databaseReferenceAmateur.child(primraryKey!!).setValue(user) // Add the user to the database with the primary key
-                    Toast.makeText(this@SignUpPage, "Amateur user created", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this@SignUpPage, MainActivity::class.java)) // Go to the login page
                     finish()
                 }

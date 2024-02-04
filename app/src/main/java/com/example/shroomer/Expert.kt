@@ -2,8 +2,8 @@ package com.example.shroomer
 
 import java.util.LinkedList
 
-class Expert(name: String, email: String, password: String, user_id: String) :
-    User(name, email, password, user_id) {
+class Expert(username: String, email: String, password: String, user_id: String) :
+    User(username, email, password, user_id) {
 
         private lateinit var comments: LinkedList<Long>
         private lateinit var likes: LinkedList<Long>
