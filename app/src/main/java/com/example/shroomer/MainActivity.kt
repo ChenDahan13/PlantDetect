@@ -41,13 +41,14 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val isExist = isUserExist(username, password)
-            if (isExist == 1) {
-                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                val homePageIntent = Intent(this, HomePageAmateur::class.java)
-                startActivity(homePageIntent)
-            } else {
-                Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
+            isUserExist(username, password) { isExist ->
+                if (isExist) {
+                    Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+                    val homePageIntent = Intent(this, HomePageAmateur::class.java)
+                    startActivity(homePageIntent)
+                } else {
+                    Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -58,8 +59,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun isUserExist(username:String, password: String): Int {
-        var isExist: Int = 0
+    private fun isUserExist(username:String, password: String, callback: (Boolean) -> Unit) {
+        var isExist = false
         databaseReferenceAmateur.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) { // Check if the user exists in the amateur database
@@ -67,8 +68,10 @@ class MainActivity : AppCompatActivity() {
                     for (amateurUser in snapshot.children) {
                         val userPassword = amateurUser.child("password").getValue(String::class.java)
                         if (userPassword == password) { // If the user password is right, set the isExist variable to 1
-                            isExist = 1
+                            isExist = true
                             Toast.makeText(this@MainActivity,"existing in amateur, isexist = $isExist", Toast.LENGTH_SHORT).show()
+                            callback(isExist)
+                            return
                         }
                     }
                 }
@@ -77,9 +80,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
-        if (isExist == 1) { // The user exists in the amateur database
-            return isExist
-        }
+
         databaseReferenceExpert.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) { // Check if the user exists in the expert database
@@ -87,17 +88,18 @@ class MainActivity : AppCompatActivity() {
                     for (expertUser in snapshot.children) {
                         val userPassword = expertUser.child("password").getValue(String::class.java)
                         if (userPassword == password) { // If the user password is right, set the isExist variable to 1
-                            isExist = 1
+                            isExist = true
                             Toast.makeText(this@MainActivity,"existing in expert, isexist = $isExist", Toast.LENGTH_SHORT).show()
+                            callback(isExist)
+                            return
                         }
                     }
                 }
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@MainActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+                callback(isExist)
             }
         })
-        Toast.makeText(this@MainActivity,"Not exist, isexist = $isExist", Toast.LENGTH_SHORT).show()
-        return isExist
     }
 }
