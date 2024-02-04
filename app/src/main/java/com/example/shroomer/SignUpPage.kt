@@ -54,7 +54,7 @@ class SignUpPage : AppCompatActivity() {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            println("Clicking on the sign up button and the choice is $choice")
+            Toast.makeText(this@SignUpPage, "after select the choice is $choice", Toast.LENGTH_SHORT).show()
             signUpUser(username, email, password, choice)
         }
     }
@@ -69,25 +69,9 @@ class SignUpPage : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                when (position) {
-                    0 -> {
-                        // for Amateur
-                        Toast.makeText(this@SignUpPage, "Amateur user", Toast.LENGTH_SHORT)
-                            .show()
-                        choice = 0
-                        println("this choice is 0")
-                    }
-                    1 -> {
-                        // For expert
-                        Toast.makeText(
-                            this@SignUpPage,
-                            "Please add certificate",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        choice = 1
-                        println("this choice is 1")
-                    }
-                }
+                choice = position
+                Toast.makeText(this@SignUpPage, "You selected ${spinner.selectedItem} and position $choice", Toast.LENGTH_SHORT)
+                    .show()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 Toast.makeText(this@SignUpPage, "Did not select option", Toast.LENGTH_SHORT)
@@ -110,15 +94,18 @@ class SignUpPage : AppCompatActivity() {
                     if (choice == 0) {// If the user is an amateur
                         user = Amateur(username, email, password, primraryKey.toString())
                         Toast.makeText(this@SignUpPage, "Amateur user created", Toast.LENGTH_SHORT).show()
+                        databaseReferenceAmateur.child(primraryKey!!).setValue(user) // Add the user to the database with the primary key
+                        startActivity(Intent(this@SignUpPage, MainActivity::class.java)) // Go to the login page
+                        finish()
                     } else if (choice == 1) { // If the user is an expert
                         user = Expert(username, email, password, primraryKey.toString())
                         Toast.makeText(this@SignUpPage, "Expert user created", Toast.LENGTH_SHORT).show()
+                        databaseReferenceExpert.child(primraryKey!!).setValue(user) // Add the user to the database with the primary key
+                        startActivity(Intent(this@SignUpPage, MainActivity::class.java)) // Go to the login page
+                        finish()
                     } else {
                         Toast.makeText(this@SignUpPage, "Invalid choice", Toast.LENGTH_SHORT).show()
                     }
-                    databaseReferenceAmateur.child(primraryKey!!).setValue(user) // Add the user to the database with the primary key
-                    startActivity(Intent(this@SignUpPage, MainActivity::class.java)) // Go to the login page
-                    finish()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
