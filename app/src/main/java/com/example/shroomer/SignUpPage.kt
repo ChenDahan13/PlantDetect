@@ -37,13 +37,19 @@ class SignUpPage : AppCompatActivity() {
         spinner = findViewById(R.id.spinner)
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, users_options)
         spinner.adapter = adapter
-        choice = spinnerChoice()
+        spinnerChoice()
         binding.signupButton.setOnClickListener {
             // Get the user input
             val username = binding.signupusername.text.toString()
             val email = binding.signupemail.text.toString()
             val password = binding.signuppassword.text.toString()
             val confirmPassword = binding.signupconfirmpassword.text.toString()
+            val selectedItem = spinner.selectedItem.toString()
+            if (selectedItem == "Amateur") {
+                choice = 0
+            } else if (selectedItem == "Expert") {
+                choice = 1
+            }
             // Check if the fields are empty
             if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT).show()
@@ -54,13 +60,11 @@ class SignUpPage : AppCompatActivity() {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            Toast.makeText(this@SignUpPage, "after select the choice is $choice", Toast.LENGTH_SHORT).show()
             signUpUser(username, email, password, choice)
         }
     }
 
-    private fun spinnerChoice(): Int {
-        var choice: Int = 0
+    private fun spinnerChoice() {
         // Access the items of the list
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -69,8 +73,7 @@ class SignUpPage : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                choice = position
-                Toast.makeText(this@SignUpPage, "You selected ${spinner.selectedItem} and position $choice", Toast.LENGTH_SHORT)
+                Toast.makeText(this@SignUpPage, "You selected ${spinner.selectedItem}", Toast.LENGTH_SHORT)
                     .show()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -78,7 +81,6 @@ class SignUpPage : AppCompatActivity() {
                     .show()
             }
         }
-        return choice
     }
 
     // Function to sign up the user
