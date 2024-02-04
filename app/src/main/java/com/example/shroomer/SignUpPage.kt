@@ -49,12 +49,7 @@ class SignUpPage : AppCompatActivity() {
                 return@setOnClickListener
             }
             choice = spinnerChoice()
-            // Check if the user is an amateur or an expert
-            if (choice == 0) {
-                signUpAmateur(username, email, password)
-            } else {
-                signUpExpert(username, email, password)
-            }
+            signUpUser(username, email, password, choice)
         }
     }
 
@@ -99,7 +94,7 @@ class SignUpPage : AppCompatActivity() {
     }
 
     // Function to sign up the amateur user
-    private fun signUpAmateur(username: String, email: String, password: String) {
+    private fun signUpUser(username: String, email: String, password: String, choice: Int) {
         databaseReferenceAmateur.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -107,31 +102,16 @@ class SignUpPage : AppCompatActivity() {
                     Toast.makeText(this@SignUpPage, "Username already exists", Toast.LENGTH_SHORT).show()
                 } else { // If the username does not exist
                     val primraryKey = databaseReferenceAmateur.push().key // Primary key for the database
-                    val amateur = Amateur(username, email, password, primraryKey.toString())
-                    databaseReferenceAmateur.child(primraryKey!!).setValue(amateur) // Add the user to the database with the primary key
+                    var user: User? = null
+                    if (choice == 0) {// If the user is an amateur
+                        user = Amateur(username, email, password, primraryKey.toString())
+                    } else if (choice == 1) { // If the user is an expert
+                        user = Expert(username, email, password, primraryKey.toString())
+                    } else {
+                        Toast.makeText(this@SignUpPage, "Invalid choice", Toast.LENGTH_SHORT).show()
+                    }
+                    databaseReferenceAmateur.child(primraryKey!!).setValue(user) // Add the user to the database with the primary key
                     Toast.makeText(this@SignUpPage, "Amateur user created", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@SignUpPage, MainActivity::class.java)) // Go to the login page
-                    finish()
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@SignUpPage, "Error creating user", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    // Function to sign up the expert user
-    private fun signUpExpert(username: String, email: String, password: String) {
-        databaseReferenceExpert.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) { // If the username already exists
-                    Toast.makeText(this@SignUpPage, "Username already exists", Toast.LENGTH_SHORT).show()
-                } else { // If the username does not exist
-                    val primraryKey = databaseReferenceExpert.push().key // Primary key for the database
-                    val expert = Expert(username, email, password, primraryKey.toString())
-                    databaseReferenceExpert.child(primraryKey!!).setValue(expert) // Add the user to the database with the primary key
-                    Toast.makeText(this@SignUpPage, "Expert user created", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this@SignUpPage, MainActivity::class.java)) // Go to the login page
                     finish()
                 }
