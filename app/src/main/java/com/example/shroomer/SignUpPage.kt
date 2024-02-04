@@ -102,7 +102,7 @@ class SignUpPage : AppCompatActivity() {
                     } else if (choice == 1) { // If the user is an expert
                         user = Expert(username, email, password, primraryKey.toString())
                         Toast.makeText(this@SignUpPage, "Expert user created", Toast.LENGTH_SHORT).show()
-                        databaseReferenceExpert.child(primraryKey!!).setValue(user) // Add the user to the database with the primary key
+                        databaseReferenceExpert.child(primraryKey!!).setValue(user.toMap()) // Add the user to the database with the primary key
                         startActivity(Intent(this@SignUpPage, MainActivity::class.java)) // Go to the login page
                         finish()
                     } else {

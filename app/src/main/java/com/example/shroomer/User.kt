@@ -14,7 +14,14 @@ open class User(
     init {
         this.posts_ids = LinkedList()
     }
-
+    fun toMap(): Map<String, Any> {
+        return mapOf(
+            "username" to this.username,
+            "email" to this.email,
+            "password" to this.password,
+            "user_id" to this.user_id
+        )
+    }
     fun getPassword(): String { return this.password }
     fun login(name: String, password: String) {}
     fun editProfile(other: User) {}
