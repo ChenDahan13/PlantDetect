@@ -60,6 +60,7 @@ class SignUpPage : AppCompatActivity() {
         // Access the spinner
         val spinner: Spinner = findViewById(R.id.spinner)
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, users_options)
+        spinner.adapter = adapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
