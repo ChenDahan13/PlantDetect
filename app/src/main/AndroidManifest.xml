@@ -19,7 +19,8 @@
             android:name=".SignUpPage"
             android:exported="false" />
         <activity
-            android:name=".PostUploadPage" />
+            android:name=".PostUploadPage"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
