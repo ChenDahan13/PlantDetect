@@ -72,7 +72,7 @@ class PostUploadPage :AppCompatActivity() {
         titleText = binding.textBox1.text.toString()
         //val userName :String= intent.getStringExtra("userid").toString()
         Log.i("titleText" , titleText)
-        Log.i("username" , userName.toString())
+        Log.i("username" , "username ID / name")
 
         if(titleText.isEmpty() || (imageBitmap.width==0 && imageBitmap.height==0)){
             return
