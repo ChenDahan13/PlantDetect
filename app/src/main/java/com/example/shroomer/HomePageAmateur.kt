@@ -1,19 +1,48 @@
 package com.example.shroomer
 
-import android.content.Intent
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
+import com.example.shroomer.databinding.ActivityHomePageAmateurBinding
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.result.contract.ActivityResultContracts
+import android.graphics.Bitmap
+import android.util.Log
+import android.widget.Button
 class HomePageAmateur : AppCompatActivity() {
+
+    private lateinit var binding: ActivityHomePageAmateurBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home_page_amateur)
+        binding = ActivityHomePageAmateurBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        Log.d("onCreate() Homepage", savedInstanceState.toString())
 
-        val newpostButton: Button = findViewById(R.id.bottom_navigation)
-        newpostButton.setOnClickListener {
-            val newPostIntent = Intent(this, PostUploadPage::class.java)
-            startActivity(newPostIntent)
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigation.setOnItemSelectedListener{ navigationItem ->
+            when(navigationItem.itemId){
+                R.id.bottom_home-> {
+                    Log.d("HOME NAVIGATION", savedInstanceState.toString())
+                    true
+                }
+                R.id.bottom_upload->{
+                    Log.d("UPLOAD NAVIGATION", savedInstanceState.toString())
+                    val postUploadPage = Intent(this, PostUploadPage::class.java) //
+                    startActivity(postUploadPage)
+                    true
+                }
+                R.id.bottom_profile->{
+                    Log.d("MY PROFILE", savedInstanceState.toString())
+                    true
+                }
+                else->false
+
+             }
         }
+
+
     }
 //    val loginButton: Button = findViewById(R.id.login_button)
 

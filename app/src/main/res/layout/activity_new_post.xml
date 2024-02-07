@@ -9,12 +9,15 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp">
+
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/image1view"
             android:layout_width="316dp"
             android:layout_height="309dp"
             app:layout_constraintBottom_toTopOf="@+id/button_gallery"
@@ -49,7 +52,7 @@
             tools:layout_editor_absoluteX="121dp" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/textBox1"
             android:layout_width="206dp"
             android:layout_height="131dp"
             android:ems="10"
@@ -62,7 +65,14 @@
             app:layout_constraintVertical_bias="0.988"
             tools:layout_editor_absoluteX="102dp" />
 
-    </LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Confirm Upload Post"
+            android:id="@+id/confirm_button"
+            />
+
+        </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
