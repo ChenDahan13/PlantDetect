@@ -2,6 +2,7 @@ package com.example.shroomer
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+/*
 import com.example.shroomer.databinding.ActivityMyProfileBinding
 
 class MyProfile : AppCompatActivity() {
@@ -13,4 +14,4 @@ class MyProfile : AppCompatActivity() {
         setContentView(binding.root)
 
     }
-}
+}*/

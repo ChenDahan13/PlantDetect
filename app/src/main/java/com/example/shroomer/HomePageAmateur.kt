@@ -10,6 +10,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Button
+import androidx.fragment.app.Fragment
+
 class HomePageAmateur : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomePageAmateurBinding
@@ -21,23 +23,28 @@ class HomePageAmateur : AppCompatActivity() {
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
+        replaceFragment(FragmentHomePage())
+
         bottomNavigation.setOnItemSelectedListener{ navigationItem ->
             when(navigationItem.itemId){
                 R.id.bottom_home-> {
-                    Log.i("HOME NAVIGATION", savedInstanceState.toString())
+                    replaceFragment(FragmentHomePage())
+                    //Log.i("HOME NAVIGATION", savedInstanceState.toString())
                     true
                 }
                 R.id.bottom_upload->{
                     Log.i("UPLOAD NAVIGATION", savedInstanceState.toString())
-                    val postUploadPage = Intent(this, PostUploadPage::class.java) //
+                    replaceFragment(FragmentNewPost())
+                    /*val postUploadPage = Intent(this, PostUploadPage::class.java) //
                     postUploadPage.putExtra("userid","username test")
-                    startActivity(postUploadPage)
+                    startActivity(postUploadPage)*/
                     true
                 }
                 R.id.bottom_profile->{
-                    Log.i("MY PROFILE", savedInstanceState.toString())
+                    Log.i("MY PROFILE", savedInstanceState.toString())/*
                     val myProfilePage = Intent(this, MyProfile::class.java) //
-                    startActivity(myProfilePage)
+                    startActivity(myProfilePage)*/
+                    replaceFragment(FragmentMyProfile())
                     true
                 }
                 else->false
@@ -46,6 +53,16 @@ class HomePageAmateur : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun replaceFragment(fragment: Fragment){
+        val fragmentManager = supportFragmentManager
+        val currentFragment = fragmentManager.findFragmentById(R.id.fragmentContainer)
+        if (currentFragment==null || currentFragment.javaClass!=fragment.javaClass){
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentContainer,fragment)
+            fragmentTransaction.commit()
+        }
     }
 //    val loginButton: Button = findViewById(R.id.login_button)
 

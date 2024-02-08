@@ -18,8 +18,11 @@
         <activity
             android:name=".SignUpPage"
             android:exported="false" />
+       <!-- <activity
+            android:name=".SignUpPage"
+            android:exported="false" />
         <activity
-            android:name=".PostUploadPage" />
+            android:name=".PostUploadPage" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true">
