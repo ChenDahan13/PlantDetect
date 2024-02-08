@@ -7,11 +7,15 @@ import android.app.Activity
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContracts
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.media.Image
 import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import java.io.IOException
+import java.net.URI
 
 
 class PostUploadPage :AppCompatActivity() {
@@ -57,7 +61,17 @@ class PostUploadPage :AppCompatActivity() {
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
             if( result.resultCode==Activity.RESULT_OK){
-                val selectedImage = result.data!!.data
+                val selectedImageUri : Uri? = result.data?.data
+                selectedImageUri?.let {uri ->
+                    try {
+                        val inputStream = contentResolver.openInputStream(uri)
+                        imageBitmap = BitmapFactory.decodeStream(inputStream)
+                    }catch (e: IOException){
+                        e.printStackTrace()
+                        null
+                    }
+                }
+                binding.image1view.setImageBitmap(imageBitmap)
             }
     }
     private fun dispatchTakePictureIntent(){
@@ -70,11 +84,12 @@ class PostUploadPage :AppCompatActivity() {
         //verification contains image and text
         var titleText :String
         titleText = binding.textBox1.text.toString()
-        //val userName :String= intent.getStringExtra("userid").toString()
+        val userName :String= intent.getStringExtra("userid").toString()
         Log.i("titleText" , titleText)
-        Log.i("username" , "username ID / name")
+        Log.i("username" , userName)
 
         if(titleText.isEmpty() || (imageBitmap.width==0 && imageBitmap.height==0)){
+            Log.i("POST VERIFICATION", "No Title No Image")
             return
         }
 

@@ -24,7 +24,6 @@
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_menu"
         app:itemIconSize="30dp"
-
         />
 
     <ListView

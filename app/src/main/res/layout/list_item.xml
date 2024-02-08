@@ -19,6 +19,7 @@
                 android:layout_height="80dp"
                 android:layout_marginStart="20dp"
                 android:src="@drawable/toad_mushroom"
+                android:id="@+id/postlistphoto"
                 />
 
             <LinearLayout

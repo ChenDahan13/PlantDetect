@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Shroomer</string>
+    <string name="my_username">my_username</string>
+    <string name="my_email">my_email</string>
+    <string name="amatauer_expert">Amatauer__Expert</string>
 
     <string-array name="Users">
         <item>Amateur</item>

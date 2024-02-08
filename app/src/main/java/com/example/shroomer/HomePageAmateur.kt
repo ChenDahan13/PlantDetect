@@ -24,17 +24,20 @@ class HomePageAmateur : AppCompatActivity() {
         bottomNavigation.setOnItemSelectedListener{ navigationItem ->
             when(navigationItem.itemId){
                 R.id.bottom_home-> {
-                    Log.d("HOME NAVIGATION", savedInstanceState.toString())
+                    Log.i("HOME NAVIGATION", savedInstanceState.toString())
                     true
                 }
                 R.id.bottom_upload->{
-                    Log.d("UPLOAD NAVIGATION", savedInstanceState.toString())
+                    Log.i("UPLOAD NAVIGATION", savedInstanceState.toString())
                     val postUploadPage = Intent(this, PostUploadPage::class.java) //
+                    postUploadPage.putExtra("userid","username test")
                     startActivity(postUploadPage)
                     true
                 }
                 R.id.bottom_profile->{
-                    Log.d("MY PROFILE", savedInstanceState.toString())
+                    Log.i("MY PROFILE", savedInstanceState.toString())
+                    val myProfilePage = Intent(this, MyProfile::class.java) //
+                    startActivity(myProfilePage)
                     true
                 }
                 else->false
