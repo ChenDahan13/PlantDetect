@@ -1,6 +1,7 @@
 package com.example.shroomer.Login
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.AdapterView
@@ -9,6 +10,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import android.view.View
 import android.widget.Button
+import android.app.Activity
 import com.example.shroomer.Entities.Amateur
 import com.example.shroomer.Entities.Expert
 import com.example.shroomer.Entities.User
@@ -19,6 +21,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.util.*
+import com.google.firebase.storage.FirebaseStorage
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -29,6 +33,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var databaseReferenceExpert: DatabaseReference
     private lateinit var uploadButton: Button
     private lateinit var spinner: Spinner
+    private lateinit var filePath: Uri
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpPageBinding.inflate(layoutInflater)
@@ -60,6 +65,13 @@ class SignUpActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // Handle nothing selected if needed
             }
+        }
+        uploadButton.setOnClickListener {
+            // Create an intent to pick a PDF file
+            val intent = Intent()
+            intent.type = "application/pdf"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select PDF"), 1)
         }
 
 
@@ -93,6 +105,49 @@ class SignUpActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+            // Retrieve the selected file URI
+            val selectedFileUri: Uri? = data.data
+            if (selectedFileUri != null) {
+                // Call the uploadFile function with the selected file URI
+                uploadFile(selectedFileUri)
+            } else {
+                Toast.makeText(this, "File upload failed. Please try again", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun uploadFile(fileUri: Uri) {
+        // Get Firebase storage reference
+        val storageRef = FirebaseStorage.getInstance().reference
+
+        // Generate a unique file name
+        val fileName = "${System.currentTimeMillis()}.pdf"
+
+        // Create a reference to the file location
+        val fileReference = storageRef.child("uploads/$fileName")
+
+        // Upload the file to Firebase Storage
+        val uploadTask = fileReference.putFile(fileUri)
+        uploadTask.addOnSuccessListener { taskSnapshot ->
+            // File upload successful, get the download URL
+            fileReference.downloadUrl.addOnSuccessListener { uri ->
+                // Handle the download URL (URI) as needed
+                val downloadUri = uri.toString()
+                // Pass the download URI to the appropriate function
+                // e.g., signUpExpert(username, email, password, downloadUri)
+            }.addOnFailureListener { exception ->
+                // Handle failure to get download URL
+            }
+        }.addOnFailureListener { exception ->
+            // Handle failure to upload file
         }
     }
 
