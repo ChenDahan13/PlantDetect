@@ -68,13 +68,20 @@
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
+        android:layout_height="45dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginTop="0dp"
-        android:background="@color/white"/>
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/white" />
 
+
+    <Button
+        android:id="@+id/uploadButton"
+        android:layout_width="181dp"
+        android:layout_height="wrap_content"
+        android:text="Upload Certificate"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/signup_button"

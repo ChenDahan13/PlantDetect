@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import android.view.View
+import android.widget.Button
 import com.example.shroomer.Entities.Amateur
 import com.example.shroomer.Entities.Expert
 import com.example.shroomer.Entities.User
@@ -26,6 +27,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var databaseReferenceAmateur: DatabaseReference
     private lateinit var databaseReferenceExpert: DatabaseReference
+    private lateinit var uploadButton: Button
     private lateinit var spinner: Spinner
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +42,27 @@ class SignUpActivity : AppCompatActivity() {
         spinner = findViewById(R.id.spinner)
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, users_options)
         spinner.adapter = adapter
+        uploadButton = findViewById(R.id.uploadButton)
+//        uploadButton.isEnabled = false
         spinnerChoice()
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedItem = spinner.selectedItem.toString()
+                // Enable/disable the uploadButton based on the selected item
+                if (selectedItem == "Expert") {
+                    uploadButton.isEnabled = true // Enable the button
+                } else {
+                    uploadButton.isEnabled = false // Disable the button
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Handle nothing selected if needed
+            }
+        }
+
+
         binding.signupButton.setOnClickListener {
             // Get the user input
             val username = binding.signupusername.text.toString()
@@ -158,7 +180,7 @@ class SignUpActivity : AppCompatActivity() {
                 } else { // If the username does not exist
                     val primraryKey = databaseReferenceExpert.push().key // Primary key for the database
                     var user: User? = null
-                    user = Expert(username, email, password, primraryKey.toString())
+                    user = Expert(username, email, password, primraryKey.toString(), "uri")
                     Toast.makeText(this@SignUpActivity, "Expert user created", Toast.LENGTH_SHORT).show()
                     databaseReferenceExpert.child(primraryKey!!).setValue(user.toMap()) // Add the user to the database with the primary key
                     startActivity(Intent(this@SignUpActivity, LoginActivity::class.java)) // Go to the login page
