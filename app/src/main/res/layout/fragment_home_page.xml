@@ -38,6 +38,7 @@
             android:textSize="26dp"
             android:textStyle="bold"
             android:text="Hello Toad !"
+            android:id="@+id/hello_user1"
             android:textColor="@color/red"/>
 
     </androidx.cardview.widget.CardView>-->

@@ -99,8 +99,9 @@ class FragmentNewPost :Fragment() {
             return
         }
 
-        //creating object
 
+
+        //creating Post with userID
         //uploading
 
         //finish
