@@ -1,19 +1,21 @@
-package com.example.shroomer
+package com.example.shroomer.Login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import com.example.shroomer.Entities.User
+import com.example.shroomer.Homepage.HomePageAmateur
+import com.example.shroomer.R
 import com.example.shroomer.databinding.ActivityMainBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.getValue
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     // Set the database reference
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseDatabase: FirebaseDatabase
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         // Clicking on the sign up button
         signupButton.setOnClickListener {
-            val signUpIntent = Intent(this, SignUpPage::class.java)
+            val signUpIntent = Intent(this, SignUpActivity::class.java)
             startActivity(signUpIntent)
         }
     }
@@ -89,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@MainActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -113,7 +115,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@MainActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
                 callback(isExist)
             }
         })

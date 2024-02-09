@@ -1,4 +1,4 @@
-package com.example.shroomer
+package com.example.shroomer.Entities
 
 import android.graphics.Bitmap
 import java.util.LinkedList
@@ -11,7 +11,7 @@ class Post(private var title: String, private var user_id: String , private val 
         this.comments = LinkedList()
     }
 
-    fun Post.addComment(comment :Comment){
+    fun Post.addComment(comment : Comment){
         this.comments.add(comment)
     }
 

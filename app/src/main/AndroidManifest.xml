@@ -13,10 +13,10 @@
         android:theme="@style/Theme.Shroomer"
         tools:targetApi="31">
         <activity
-            android:name=".HomePageAmateur"
+            android:name=".Homepage.HomePageAmateur"
             android:exported="false" />
         <activity
-            android:name=".SignUpPage"
+            android:name=".Login.SignUpActivity"
             android:exported="false" />
        <!-- <activity
             android:name=".SignUpPage"
@@ -24,7 +24,7 @@
         <activity
             android:name=".PostUploadPage" />-->
         <activity
-            android:name=".MainActivity"
+            android:name=".Login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

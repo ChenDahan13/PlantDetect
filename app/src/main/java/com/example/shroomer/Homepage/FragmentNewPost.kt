@@ -1,4 +1,4 @@
-package com.example.shroomer
+package com.example.shroomer.Homepage
 
 import android.app.Activity
 import android.content.Intent
@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment
 import androidx.activity.result.contract.ActivityResultContracts
 import android.util.Log
 import android.widget.EditText
+import com.example.shroomer.Entities.Post
+import com.example.shroomer.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.IOException
 

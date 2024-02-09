@@ -1,17 +1,14 @@
-package com.example.shroomer
+package com.example.shroomer.Homepage
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.shroomer.databinding.ActivityHomePageAmateurBinding
-import android.app.Activity
-import android.content.Intent
-import androidx.activity.result.contract.ActivityResultContracts
-import android.graphics.Bitmap
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.shroomer.Entities.User
+import com.example.shroomer.R
 
 class HomePageAmateur : AppCompatActivity() {
 
@@ -44,12 +41,12 @@ class HomePageAmateur : AppCompatActivity() {
 
         bottomNavigation.setOnItemSelectedListener{ navigationItem ->
             when(navigationItem.itemId){
-                R.id.bottom_home-> {
+                R.id.bottom_home -> {
                     replaceFragment(fragmentHomePage)
                     //Log.i("HOME NAVIGATION", savedInstanceState.toString())
                     true
                 }
-                R.id.bottom_upload->{
+                R.id.bottom_upload ->{
                     Log.i("UPLOAD NAVIGATION", savedInstanceState.toString())
                     replaceFragment(fragmentNewPost)
                     /*val postUploadPage = Intent(this, PostUploadPage::class.java) //
@@ -57,7 +54,7 @@ class HomePageAmateur : AppCompatActivity() {
                     startActivity(postUploadPage)*/
                     true
                 }
-                R.id.bottom_profile->{
+                R.id.bottom_profile ->{
                     Log.i("MY PROFILE", savedInstanceState.toString())/*
                     val myProfilePage = Intent(this, MyProfile::class.java) //
                     startActivity(myProfilePage)*/

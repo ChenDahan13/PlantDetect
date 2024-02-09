@@ -1,4 +1,4 @@
-package com.example.shroomer
+package com.example.shroomer.Entities
 
 import android.os.Parcel
 import android.os.Parcelable

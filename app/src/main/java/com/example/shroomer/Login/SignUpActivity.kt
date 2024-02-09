@@ -1,4 +1,4 @@
-package com.example.shroomer
+package com.example.shroomer.Login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +8,10 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import android.view.View
+import com.example.shroomer.Entities.Amateur
+import com.example.shroomer.Entities.Expert
+import com.example.shroomer.Entities.User
+import com.example.shroomer.R
 import com.example.shroomer.databinding.ActivitySignUpPageBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -15,7 +19,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class SignUpPage : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity() {
 
     // Set the database reference
     private lateinit var binding: ActivitySignUpPageBinding
@@ -111,11 +115,11 @@ class SignUpPage : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                Toast.makeText(this@SignUpPage, "You selected ${spinner.selectedItem}", Toast.LENGTH_SHORT)
+                Toast.makeText(this@SignUpActivity, "You selected ${spinner.selectedItem}", Toast.LENGTH_SHORT)
                     .show()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(this@SignUpPage, "Did not select option", Toast.LENGTH_SHORT)
+                Toast.makeText(this@SignUpActivity, "Did not select option", Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -127,19 +131,19 @@ class SignUpPage : AppCompatActivity() {
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) { // If the username already exists
-                    Toast.makeText(this@SignUpPage, "Username already exists", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignUpActivity, "Username already exists", Toast.LENGTH_SHORT).show()
                 } else { // If the username does not exist
                     val primraryKey = databaseReferenceAmateur.push().key // Primary key for the database
                     var user: User? = null
                     user = Amateur(username, email, password, primraryKey.toString())
-                    Toast.makeText(this@SignUpPage, "Amateur user created", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignUpActivity, "Amateur user created", Toast.LENGTH_SHORT).show()
                     databaseReferenceAmateur.child(primraryKey!!).setValue(user.toMap()) // Add the user to the database with the primary key
-                    startActivity(Intent(this@SignUpPage, MainActivity::class.java)) // Go to the login page
+                    startActivity(Intent(this@SignUpActivity, LoginActivity::class.java)) // Go to the login page
                     finish()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@SignUpPage, "Error creating user", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@SignUpActivity, "Error creating user", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -150,19 +154,19 @@ class SignUpPage : AppCompatActivity() {
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) { // If the username already exists
-                    Toast.makeText(this@SignUpPage, "Username already exists", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignUpActivity, "Username already exists", Toast.LENGTH_SHORT).show()
                 } else { // If the username does not exist
                     val primraryKey = databaseReferenceExpert.push().key // Primary key for the database
                     var user: User? = null
                     user = Expert(username, email, password, primraryKey.toString())
-                    Toast.makeText(this@SignUpPage, "Expert user created", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignUpActivity, "Expert user created", Toast.LENGTH_SHORT).show()
                     databaseReferenceExpert.child(primraryKey!!).setValue(user.toMap()) // Add the user to the database with the primary key
-                    startActivity(Intent(this@SignUpPage, MainActivity::class.java)) // Go to the login page
+                    startActivity(Intent(this@SignUpActivity, LoginActivity::class.java)) // Go to the login page
                     finish()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@SignUpPage, "Error creating user", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@SignUpActivity, "Error creating user", Toast.LENGTH_SHORT).show()
             }
         })
     }
