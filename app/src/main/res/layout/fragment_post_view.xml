@@ -10,12 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/gray">
+        android:background="@color/teal">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:src="@drawable/toad_mushroom">
+            android:layout_height="275dp"
+            android:layout_gravity="top"
+            android:src="@drawable/post_image_example">
 
         </ImageView>
 
