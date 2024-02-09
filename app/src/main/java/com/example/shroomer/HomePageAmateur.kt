@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 class HomePageAmateur : AppCompatActivity() {
@@ -23,18 +24,34 @@ class HomePageAmateur : AppCompatActivity() {
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        replaceFragment(FragmentHomePage())
+        //get Parcelable User
+        val myUser: User? = intent.getParcelableExtra("my_user_parcelable")
+        Toast.makeText(this, "Hello "+myUser?.getUsername(), Toast.LENGTH_SHORT).show()
+
+        val bundle =Bundle()
+        bundle.putParcelable("my_user_parcelable",myUser)
+
+        val fragmentHomePage = FragmentHomePage()
+        val fragmentNewPost = FragmentNewPost()
+        val fragmentMyProfile = FragmentMyProfile()
+
+        fragmentHomePage.arguments = bundle
+        fragmentNewPost.arguments = bundle
+        fragmentMyProfile.arguments = bundle
+
+
+        replaceFragment(fragmentHomePage)
 
         bottomNavigation.setOnItemSelectedListener{ navigationItem ->
             when(navigationItem.itemId){
                 R.id.bottom_home-> {
-                    replaceFragment(FragmentHomePage())
+                    replaceFragment(fragmentHomePage)
                     //Log.i("HOME NAVIGATION", savedInstanceState.toString())
                     true
                 }
                 R.id.bottom_upload->{
                     Log.i("UPLOAD NAVIGATION", savedInstanceState.toString())
-                    replaceFragment(FragmentNewPost())
+                    replaceFragment(fragmentNewPost)
                     /*val postUploadPage = Intent(this, PostUploadPage::class.java) //
                     postUploadPage.putExtra("userid","username test")
                     startActivity(postUploadPage)*/
@@ -44,7 +61,7 @@ class HomePageAmateur : AppCompatActivity() {
                     Log.i("MY PROFILE", savedInstanceState.toString())/*
                     val myProfilePage = Intent(this, MyProfile::class.java) //
                     startActivity(myProfilePage)*/
-                    replaceFragment(FragmentMyProfile())
+                    replaceFragment(fragmentMyProfile)
                     true
                 }
                 else->false

@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Username:"
-                    android:textSize="26sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     tools:ignore="HardcodedText" />
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:text="@string/my_username"
-                    android:textSize="26sp"
+                    android:textSize="20sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
                 </LinearLayout>
@@ -72,7 +72,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Email:"
-                        android:textSize="26sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         tools:ignore="HardcodedText" />
@@ -83,7 +83,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/my_email"
-                        android:textSize="26sp"
+                        android:textSize="20sp"
                         android:textColor="@color/black"
                         android:textStyle="bold"/>
                 </LinearLayout>
@@ -96,7 +96,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Level:"
-                        android:textSize="26sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         tools:ignore="HardcodedText" />
@@ -107,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/amatauer_expert"
-                        android:textSize="26sp"
+                        android:textSize="20sp"
                         android:textColor="@color/black"
                         android:textStyle="bold"/>
                 </LinearLayout>

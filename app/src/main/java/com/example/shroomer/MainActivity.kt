@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
                 if (isExist) {
                     Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                     val homePageIntent = Intent(this, HomePageAmateur::class.java) //
+                    homePageIntent.putExtra("my_user_parcelable",myUser)
                     startActivity(homePageIntent)
                 } else {
                     Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
@@ -75,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                             isExist = true
                             myUser = User(username,
                                 amateurUser.child("email").getValue<String>(String::class.java)!!,
-                                "null",
+                                amateurUser.child("password").getValue<String>(String::class.java)!!,
                                 amateurUser.child("user_id").getValue<String>(String::class.java)!!
                             )
                             callback(isExist)
