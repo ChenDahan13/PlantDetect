@@ -92,6 +92,11 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            val password_valid: Boolean = isPasswordValid(password)
+            // Check if the password is valid
+            if (!password_valid) {
+                return@setOnClickListener
+            }
             // Check if the username exists
             isExistUsername(username) { isExist ->
                 if (isExist) {
@@ -122,6 +127,48 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this, "File upload failed. Please try again", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    // Function to check if password is valid
+    private fun isPasswordValid(password: String): Boolean {
+        if (password.length < 8) {
+            Toast.makeText(this, "Password must be at least 8 characters long", Toast.LENGTH_SHORT)
+                .show()
+            return false
+        }
+        var hasDigit: Boolean = false
+        var hasUpperCase: Boolean = false
+        var hasLetter: Boolean = false
+        var hasSpecialChar: Boolean = false
+        val specialCharacters: String = "!@#$%^&*()-_=+[{]};:'\"|,.<>?/`~"
+        // Check if the password has at least one digit, one uppercase letter, and one letter
+        for (c in password) {
+            if (c.isDigit()) {
+                hasDigit = true
+            }
+            if (c.isUpperCase()) {
+                hasUpperCase = true
+            }
+            if (c.isLetter()) {
+                hasLetter = true
+            }
+            if (specialCharacters.contains(c)) {
+                hasSpecialChar = true
+            }
+        }
+        if (hasDigit && hasUpperCase && hasLetter && hasSpecialChar) {
+            return true
+        }
+        if(!hasDigit) {
+            Toast.makeText(this, "Password must contain at least one digit", Toast.LENGTH_SHORT).show()
+        } else if(!hasUpperCase) {
+            Toast.makeText(this, "Password must contain at least one uppercase letter", Toast.LENGTH_SHORT).show()
+        } else if(!hasLetter) {
+            Toast.makeText(this, "Password must contain at least one letter", Toast.LENGTH_SHORT).show()
+        } else if (!hasSpecialChar) {
+            Toast.makeText(this, "Password must contain at least one special character", Toast.LENGTH_SHORT).show()
+        }
+        return false
     }
 
     private fun uploadFile(fileUri: Uri) {
