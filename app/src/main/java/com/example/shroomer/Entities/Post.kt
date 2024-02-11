@@ -3,7 +3,7 @@ package com.example.shroomer.Entities
 import android.graphics.Bitmap
 import java.util.LinkedList
 
-class Post(private var title: String, private var user_id: String , private val imageBitmap: Bitmap) {
+class Post(public var title: String, var user_id: String , val imageBitmap: Bitmap) {
 
     private lateinit var comments: LinkedList<Comment>
 
@@ -14,7 +14,6 @@ class Post(private var title: String, private var user_id: String , private val 
     fun Post.addComment(comment : Comment){
         this.comments.add(comment)
     }
-
 
 
 }

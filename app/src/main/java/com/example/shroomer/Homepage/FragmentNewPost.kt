@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import android.util.Log
 import android.widget.EditText
 import com.example.shroomer.Entities.Post
+import com.example.shroomer.Entities.User
 import com.example.shroomer.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.IOException
@@ -100,9 +101,6 @@ class FragmentNewPost :Fragment() {
             Log.i("POST VERIFICATION", "No Title No Image")
             return
         }
-
-
-
         //creating Post with userID
         //uploading
 
