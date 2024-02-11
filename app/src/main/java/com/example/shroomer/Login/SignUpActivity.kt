@@ -176,7 +176,7 @@ class SignUpActivity : AppCompatActivity() {
         val storageRef = FirebaseStorage.getInstance().reference
 
         // Generate a unique file name
-        val fileName = "${System.currentTimeMillis()}.pdf"
+        val fileName = "${System.currentTimeMillis()}cert.pdf"
 
         // Create a reference to the file location
         val fileReference = storageRef.child("uploads/$fileName")

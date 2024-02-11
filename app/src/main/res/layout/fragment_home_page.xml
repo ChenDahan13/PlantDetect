@@ -14,14 +14,15 @@
         android:layout_margin="5dp"
         android:background="@drawable/search_bar"
         android:iconifiedByDefault="false"
-        android:queryHint="Search"/>
+        android:queryHint="Search" />
 
     <ListView
+        android:id="@+id/posts_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"
         android:layout_marginTop="100dp"
-        tools:listitem="@layout/list_item"/>
+        android:layout_marginBottom="50dp"
+        tools:listitem="@layout/list_item" />
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
