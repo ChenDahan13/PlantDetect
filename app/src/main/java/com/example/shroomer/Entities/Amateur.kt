@@ -1,5 +1,7 @@
 package com.example.shroomer.Entities
 
+import android.os.Parcel
+import android.os.Parcelable
 import java.util.LinkedList
 
 class Amateur(username: String, email: String, password: String, user_id: String) :

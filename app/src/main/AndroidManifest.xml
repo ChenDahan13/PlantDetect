@@ -18,11 +18,7 @@
         <activity
             android:name=".Login.SignUpActivity"
             android:exported="false" />
-       <!-- <activity
-            android:name=".SignUpPage"
-            android:exported="false" />
-        <activity
-            android:name=".PostUploadPage" />-->
+
         <activity
             android:name=".Login.LoginActivity"
             android:exported="true">

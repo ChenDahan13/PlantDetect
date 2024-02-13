@@ -74,6 +74,7 @@ class HomePageAmateur : AppCompatActivity() {
         val currentFragment = fragmentManager.findFragmentById(R.id.fragmentContainer)
         if (currentFragment==null || currentFragment.javaClass!=fragment.javaClass){
             val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.add(FragmentHomePage(),"home_page")
             fragmentTransaction.replace(R.id.fragmentContainer,fragment)
             fragmentTransaction.commit()
         }

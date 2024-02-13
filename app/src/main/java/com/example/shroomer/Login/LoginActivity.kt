@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import com.example.shroomer.Entities.Amateur
 import com.example.shroomer.Entities.User
+import com.example.shroomer.Entities.Expert
 import com.example.shroomer.Homepage.HomePageAmateur
 import com.example.shroomer.R
 import com.example.shroomer.databinding.ActivityMainBinding
@@ -22,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var databaseReferenceAmateur: DatabaseReference
     private lateinit var databaseReferenceExpert: DatabaseReference
     private lateinit var myUser: User
+    private lateinit var extraExpertAmateur : String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
                 if (isExist) {
                     Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                     val homePageIntent = Intent(this, HomePageAmateur::class.java) //
-                    homePageIntent.putExtra("my_user_parcelable",myUser)
+                    homePageIntent.putExtra(extraExpertAmateur,myUser)
                     startActivity(homePageIntent)
                 } else {
                     Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
@@ -76,11 +79,13 @@ class LoginActivity : AppCompatActivity() {
                         val userPassword = amateurUser.child("password").getValue(String::class.java)
                         if (userPassword == password) { // If the user password is right, set the isExist variable to 1
                             isExist = true
-                            myUser = User(username,
+                            //
+                            myUser = Amateur(username,
                                 amateurUser.child("email").getValue<String>(String::class.java)!!,
                                 amateurUser.child("password").getValue<String>(String::class.java)!!,
                                 amateurUser.child("user_id").getValue<String>(String::class.java)!!
                             )
+                            extraExpertAmateur = "my_amateur_user"
                             callback(isExist)
                             return
                         } else { // Password is wrong
@@ -103,6 +108,13 @@ class LoginActivity : AppCompatActivity() {
                         val userPassword = expertUser.child("password").getValue(String::class.java)
                         if (userPassword == password) { // If the user password is right, set the isExist variable to 1
                             isExist = true
+                            myUser = Expert(username,
+                                expertUser.child("email").getValue<String>(String::class.java)!!,
+                                expertUser.child("password").getValue<String>(String::class.java)!!,
+                                expertUser.child("user_id").getValue<String>(String::class.java)!!,
+                                expertUser.child("certificate_uri").getValue<String>(String::class.java)!!
+                            )
+                            extraExpertAmateur = "my_expert_user"
                             callback(isExist)
                             return
                         } else { // Password is wrong

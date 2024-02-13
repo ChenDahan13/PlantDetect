@@ -18,7 +18,7 @@ open class User (
         this.posts_ids = LinkedList()
     }
 
-    fun toMap(): Map<String, Any> {
+    open fun toMap(): Map<String, Any> {
         return mapOf(
             "username" to this.username,
             "email" to this.email,
@@ -34,8 +34,6 @@ open class User (
 
     fun login(name: String, password: String) {}
     fun editProfile(other: User) {}
-
-
 
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",

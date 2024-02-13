@@ -56,7 +56,7 @@
             android:layout_width="206dp"
             android:layout_height="131dp"
             android:ems="10"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:hint="Description"
             android:layout_gravity="center"
             android:background="@drawable/shapeemail"
@@ -69,8 +69,10 @@
             tools:layout_editor_absoluteX="102dp" />
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
             android:text="Confirm Upload Post"
             android:id="@+id/confirm_button"
             />
