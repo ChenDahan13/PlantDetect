@@ -21,7 +21,7 @@ class HomePageAmateur : AppCompatActivity() {
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        //get Parcelable User
+        // get Parcelable User
         val myUser: User? = intent.getParcelableExtra("my_user_parcelable")
         Toast.makeText(this, "Hello "+myUser?.getUsername(), Toast.LENGTH_SHORT).show()
 
