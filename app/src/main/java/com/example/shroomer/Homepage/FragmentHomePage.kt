@@ -9,10 +9,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.content.Intent
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.shroomer.Entities.Post
 import com.example.shroomer.Entities.User
@@ -65,11 +67,16 @@ class FragmentHomePage :Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_home_page,container,false)
         setupViews(view)
+        super.onCreate(savedInstanceState)
 
-        val myUser = arguments?.getParcelable<User>("my_user_parcelable")
+
+//        val myUser = arguments?.getParcelable<User>("my_user_parcelable")
+        val myUserID = activity?.intent?.getStringExtra("my_user_id")
+        val myUsername = activity?.intent?.getStringExtra("username")
+        Toast.makeText(context, "Hello "+myUserID, Toast.LENGTH_SHORT).show()
 
 
-        view.findViewById<TextView>(R.id.hello_user1).text="Hello "+myUser?.getUsername()+" !"
+        view.findViewById<TextView>(R.id.hello_user1).text="Hello "+myUsername+" !"
 
 
         return view

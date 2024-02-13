@@ -54,7 +54,9 @@ class LoginActivity : AppCompatActivity() {
                 if (isExist) {
                     Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                     val homePageIntent = Intent(this, HomePageAmateur::class.java) //
-                    homePageIntent.putExtra(extraExpertAmateur,myUser)
+                    homePageIntent.putExtra("my_user_id", myUser.getUserID().toString())
+                    homePageIntent.putExtra("username", username)
+
                     startActivity(homePageIntent)
                 } else {
                     Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()

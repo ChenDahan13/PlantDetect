@@ -110,6 +110,7 @@ class FragmentNewPost :Fragment() {
     private fun dispatchUploadPost(view: View){
 
         myUser = arguments?.getParcelable<User>("my_user_parcelable")!! // Get the user from the arguments
+        val username = activity?.intent?.getStringExtra("username").toString()
         // verification contains image and text
         var titleText: String
         titleText = view.findViewById<EditText>(R.id.textBox1).text.toString()
@@ -131,7 +132,7 @@ class FragmentNewPost :Fragment() {
                             val imgUrl = url.toString()
 
 
-                            post = Post(titleText, myUser.getUserID() , imgUrl) // Create the post object
+                            post = Post(titleText, username , imgUrl) // Create the post object
 
                             databaseReferencePost.child(postId).setValue(post)
                                 .addOnCompleteListener{
