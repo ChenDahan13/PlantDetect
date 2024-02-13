@@ -57,7 +57,7 @@
             android:layout_height="131dp"
             android:ems="10"
             android:layout_marginTop="20dp"
-            android:text="Description"
+            android:hint="Description"
             android:layout_gravity="center"
             android:background="@drawable/shapeemail"
             android:textColor="@color/black"

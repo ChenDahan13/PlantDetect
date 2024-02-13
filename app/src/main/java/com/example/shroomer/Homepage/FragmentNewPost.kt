@@ -105,11 +105,12 @@ class FragmentNewPost :Fragment() {
         myUser = arguments?.getParcelable<User>("my_user_parcelable")!! // Get the user from the arguments
         // verification contains image and text
         var titleText: String
-        titleText = view.findViewById<EditText>(R.id.editPostText).text.toString()
+        titleText = view.findViewById<EditText>(R.id.textBox1).text.toString()
         Log.i("titleText" , titleText)
         Log.i("username" , "${myUser.getUsername()}")
 
         if(titleText.isEmpty() || imageBitmap == null) {
+            Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
             Log.i("POST VERIFICATION", "No Title No Image")
             return
         }
