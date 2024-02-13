@@ -23,14 +23,18 @@ import com.example.shroomer.Entities.Post
 import com.example.shroomer.Entities.User
 import com.example.shroomer.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.io.IOException
 
 class FragmentNewPost :Fragment() {
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var databaseReferencePost: DatabaseReference
     private var imageBitmap : Bitmap? = null
+    private lateinit var storageRef : StorageReference
     private lateinit var post: Post
     private lateinit var myUser: User
+    private var imguri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +47,7 @@ class FragmentNewPost :Fragment() {
         // Create the database reference
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReferencePost = firebaseDatabase.reference.child("Post")
+        storageRef = FirebaseStorage.getInstance().getReference("Images")
 
         val buttonCapture = view.findViewById<FloatingActionButton>(R.id.button_capture)
         val buttonGallery = view.findViewById<Button>(R.id.button_gallery)
@@ -88,6 +93,7 @@ class FragmentNewPost :Fragment() {
     private val pickImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result->
         if( result.resultCode==Activity.RESULT_OK){
             val selectedImageUri : Uri? = result.data?.data
+            imguri = selectedImageUri
             selectedImageUri?.let {uri ->
                 try {
                     val inputStream = context?.contentResolver?.openInputStream(uri)
@@ -102,6 +108,7 @@ class FragmentNewPost :Fragment() {
     }
 
     private fun dispatchUploadPost(view: View){
+
         myUser = arguments?.getParcelable<User>("my_user_parcelable")!! // Get the user from the arguments
         // verification contains image and text
         var titleText: String
@@ -114,14 +121,41 @@ class FragmentNewPost :Fragment() {
             Log.i("POST VERIFICATION", "No Title No Image")
             return
         }
+        val postId = databaseReferencePost.push().key.toString() // Generate a unique key for the post
+        imguri?.let{
+            storageRef.child(postId).putFile(it)
+                .addOnSuccessListener { task->
+                    task.metadata!!.reference!!.downloadUrl
+                        .addOnSuccessListener { url ->
+                            Toast.makeText(context, " Image stored successfully",Toast.LENGTH_SHORT).show()
+                            val imgUrl = url.toString()
 
-        val postID = databaseReferencePost.push().key.toString() // Generate a unique key for the post
-        post = Post(titleText, myUser.getUsername(), imageBitmap!!) // Create the post object
-        databaseReferencePost.child(postID).setValue(post.toMap()) // Save the post to the database
-        Toast.makeText(context, "Post uploaded", Toast.LENGTH_SHORT).show()
-        view.findViewById<EditText>(R.id.editPostText).setText("") // Clear the text
-        view.findViewById<ImageView>(R.id.image1view).setImageBitmap(null) // Clear the image
-        parentFragmentManager.beginTransaction().remove(this).commit()
+
+                            post = Post(titleText, myUser.getUserID() , imgUrl) // Create the post object
+
+                            databaseReferencePost.child(postId).setValue(post)
+                                .addOnCompleteListener{
+                                    Toast.makeText(context, " data stored successfully",Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener{error ->
+                                    Toast.makeText(context, "error ${error.message}",Toast.LENGTH_SHORT).show()
+                                }
+
+
+                        }
+                }
+        }
+
+
+
+
+//        val postID = databaseReferencePost.push().key.toString() // Generate a unique key for the post
+//        post = Post(titleText, myUser.getUsername(), imageBitmap!!) // Create the post object
+//        databaseReferencePost.child(postID).setValue(post.toMap()) // Save the post to the database
+//        Toast.makeText(context, "Post uploaded", Toast.LENGTH_SHORT).show()
+//        view.findViewById<EditText>(R.id.editPostText).setText("") // Clear the text
+//        view.findViewById<ImageView>(R.id.image1view).setImageBitmap(null) // Clear the image
+//        parentFragmentManager.beginTransaction().remove(this).commit()
     }
 
 }

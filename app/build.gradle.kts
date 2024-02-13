@@ -7,7 +7,6 @@ plugins {
 android {
     namespace = "com.example.shroomer"
     compileSdk = 34
-
     defaultConfig {
         applicationId = "com.example.shroomer"
         minSdk = 24
@@ -37,7 +36,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-
 }
 
 dependencies {

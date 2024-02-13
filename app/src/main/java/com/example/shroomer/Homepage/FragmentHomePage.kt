@@ -34,7 +34,7 @@ class CustomAdapter(context: Context, private val postsList: List<Post>) : Array
 
         // Bind data to views in the layout
         val postPhotoImageView = itemView?.findViewById<CircleImageView>(R.id.postlistphoto)
-        postPhotoImageView?.setImageBitmap(currentPost.imageBitmap)
+//        postPhotoImageView?.setImageBitmap(currentPost.imageBitmap)
 
         val titleTextView = itemView?.findViewById<TextView>(R.id.title)
         titleTextView?.text = currentPost.title
@@ -95,7 +95,7 @@ class FragmentHomePage :Fragment() {
                     val imageRef: StorageReference = storageRef.child(imageUrl)
                     imageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
                         val imageBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                        val post = Post(title, userId, imageBitmap)
+                        val post = Post(title, userId, imageUrl)
                         postsList.add(post)
                         updateAdapter(postsList)
                     }.addOnFailureListener { exception ->
