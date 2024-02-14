@@ -115,7 +115,7 @@ class FragmentNewPost :Fragment() {
         var titleText: String
         titleText = view.findViewById<EditText>(R.id.textBox1).text.toString()
         Log.i("titleText" , titleText)
-        Log.i("username" , "${myUser.getUsername()}")
+        Log.i("username" , myUser.getUsername())
 
         if(titleText.isEmpty() || imageBitmap == null) {
             Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
@@ -144,6 +144,9 @@ class FragmentNewPost :Fragment() {
 
 
                         }
+                }
+                .addOnFailureListener{error ->
+                    Toast.makeText(context, "error ${error.message}",Toast.LENGTH_SHORT).show()
                 }
         }
 
