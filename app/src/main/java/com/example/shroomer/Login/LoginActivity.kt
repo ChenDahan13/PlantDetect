@@ -54,9 +54,6 @@ class LoginActivity : AppCompatActivity() {
                 if (isExist) {
                     Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                     val homePageIntent = Intent(this, HomePageAmateur::class.java) //
-                    homePageIntent.putExtra("my_user_id", myUser.getUserID().toString())
-                    homePageIntent.putExtra("username", username)
-
                     startActivity(homePageIntent)
                 } else {
                     Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
@@ -81,16 +78,6 @@ class LoginActivity : AppCompatActivity() {
                         val userPassword = amateurUser.child("password").getValue(String::class.java)
                         if (userPassword == password) { // If the user password is right, set the isExist variable to 1
                             isExist = true
-                            //
-                            myUser = Amateur(username,
-                                amateurUser.child("email").getValue<String>(String::class.java)!!,
-                                amateurUser.child("password").getValue<String>(String::class.java)!!,
-                                amateurUser.child("user_id").getValue<String>(String::class.java)!!
-                            )
-                            extraExpertAmateur = "my_amateur_user"
-                            callback(isExist)
-                            return
-                        } else { // Password is wrong
                             callback(isExist)
                             return
                         }
@@ -110,13 +97,6 @@ class LoginActivity : AppCompatActivity() {
                         val userPassword = expertUser.child("password").getValue(String::class.java)
                         if (userPassword == password) { // If the user password is right, set the isExist variable to 1
                             isExist = true
-                            myUser = Expert(username,
-                                expertUser.child("email").getValue<String>(String::class.java)!!,
-                                expertUser.child("password").getValue<String>(String::class.java)!!,
-                                expertUser.child("user_id").getValue<String>(String::class.java)!!,
-                                expertUser.child("certificate_uri").getValue<String>(String::class.java)!!
-                            )
-                            extraExpertAmateur = "my_expert_user"
                             callback(isExist)
                             return
                         } else { // Password is wrong
