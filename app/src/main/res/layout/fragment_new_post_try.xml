@@ -17,42 +17,42 @@
 
 
         <ImageView
-            android:id="@+id/image1view"
+            android:id="@+id/image1view_try"
             android:layout_width="316dp"
             android:layout_height="309dp"
-            app:layout_constraintBottom_toTopOf="@+id/button_gallery"
+            app:layout_constraintBottom_toTopOf="@+id/button_gallery_try"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/baseline_add_box_24"
             tools:layout_editor_absoluteX="47dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/button_capture"
+            android:id="@+id/button_capture_try"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:clickable="true"
-            app:layout_constraintBottom_toTopOf="@+id/button_gallery"
+            app:layout_constraintBottom_toTopOf="@+id/button_gallery_try"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_try"
             app:layout_constraintVertical_bias="0.521"
             app:srcCompat="@android:drawable/ic_menu_camera" />
 
         <Button
-            android:id="@+id/button_gallery"
+            android:id="@+id/button_gallery_try"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_gravity="center"
             android:text="Select from gallery"
-            app:layout_constraintBottom_toTopOf="@+id/editPostText"
+            app:layout_constraintBottom_toTopOf="@+id/editPostText_try"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.928"
             tools:layout_editor_absoluteX="121dp" />
 
         <EditText
-            android:id="@+id/textBox1"
+            android:id="@+id/textBox1_try"
             android:layout_width="206dp"
             android:layout_height="131dp"
             android:ems="10"
@@ -74,10 +74,10 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:text="Confirm Upload Post"
-            android:id="@+id/confirm_button"
+            android:id="@+id/confirm_button_try"
             />
 
-        </LinearLayout>
+    </LinearLayout>
 
 
 </FrameLayout>

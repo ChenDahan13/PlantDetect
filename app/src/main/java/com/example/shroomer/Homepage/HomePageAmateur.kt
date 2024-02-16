@@ -29,11 +29,11 @@ class HomePageAmateur : AppCompatActivity() {
         bundle.putParcelable("my_user_parcelable",myUser)
 
         val fragmentHomePage = FragmentHomePage()
-        val fragmentNewPost = FragmentNewPost()
         val fragmentMyProfile = FragmentMyProfile()
+        val fragmentNewPostTry = FragmentNewPostTry()
 
+        fragmentNewPostTry.arguments = bundle
         fragmentHomePage.arguments = bundle
-        fragmentNewPost.arguments = bundle
         fragmentMyProfile.arguments = bundle
 
 
@@ -46,12 +46,9 @@ class HomePageAmateur : AppCompatActivity() {
                     //Log.i("HOME NAVIGATION", savedInstanceState.toString())
                     true
                 }
-                R.id.bottom_upload ->{
+                R.id.bottom_upload -> {
                     Log.i("UPLOAD NAVIGATION", savedInstanceState.toString())
-                    replaceFragment(fragmentNewPost)
-                    /*val postUploadPage = Intent(this, PostUploadPage::class.java) //
-                    postUploadPage.putExtra("userid","username test")
-                    startActivity(postUploadPage)*/
+                    replaceFragment(fragmentNewPostTry)
                     true
                 }
                 R.id.bottom_profile ->{
@@ -69,7 +66,7 @@ class HomePageAmateur : AppCompatActivity() {
 
     }
 
-    private fun replaceFragment(fragment: Fragment){
+    private fun  replaceFragment(fragment: Fragment){
         val fragmentManager = supportFragmentManager
         val currentFragment = fragmentManager.findFragmentById(R.id.fragmentContainer)
         if (currentFragment==null || currentFragment.javaClass!=fragment.javaClass){

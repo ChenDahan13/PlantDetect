@@ -18,7 +18,6 @@
         <activity
             android:name=".Login.SignUpActivity"
             android:exported="false" />
-
         <activity
             android:name=".Login.LoginActivity"
             android:exported="true">

@@ -95,14 +95,15 @@ class FragmentHomePage :Fragment() {
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val title = document.getString("title") ?: ""
-                    val userId = document.getString("userId") ?: ""
-                    val imageUrl = document.getString("imageUrl") ?: ""
+                    val userId = document.getString("user_id") ?: ""
+                    val imageUrl = document.getString("imageBitmap") ?: ""
+                    val postID = document.getString("post_id") ?: ""
 
                     // Download image from Firebase Storage
                     val imageRef: StorageReference = storageRef.child(imageUrl)
                     imageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
                         val imageBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                        val post = Post(title, userId, imageUrl)
+                        val post = Post(title, userId, imageUrl, postID)
                         postsList.add(post)
                         updateAdapter(postsList)
                     }.addOnFailureListener { exception ->
