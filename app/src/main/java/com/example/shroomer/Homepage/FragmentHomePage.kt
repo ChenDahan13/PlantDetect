@@ -73,10 +73,10 @@ class FragmentHomePage :Fragment() {
 //        val myUser = arguments?.getParcelable<User>("my_user_parcelable")
         val myUserID = activity?.intent?.getStringExtra("my_user_id")
         val myUsername = activity?.intent?.getStringExtra("username")
-        Toast.makeText(context, "Hello "+myUserID, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Hello "+myUsername, Toast.LENGTH_SHORT).show()
 
 
-        view.findViewById<TextView>(R.id.hello_user1).text="Hello "+myUsername+" !"
+        view.findViewById<TextView>(R.id.hello_user1).text="Hello "+myUserID+" !"
 
 
         return view

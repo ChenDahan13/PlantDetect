@@ -40,10 +40,13 @@ class FragmentNewPostTry : Fragment() {
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReferencePost = firebaseDatabase.reference.child("Post")
         storageRef = FirebaseStorage.getInstance().getReference("Images")
+        val myUserID = activity?.intent?.getStringExtra("my_user_id")
+        val myUsername = activity?.intent?.getStringExtra("username")
+//        Toast.makeText(context, "Hello "+myUserID, Toast.LENGTH_SHORT).show() // for debugging
 
         // Click on confirm upload post button
         binding.confirmButtonTry.setOnClickListener{
-            UploadPost()
+            UploadPost(myUserID)
         }
 
         // Choose image from gallery
@@ -62,7 +65,7 @@ class FragmentNewPostTry : Fragment() {
         return binding.root
     }
 
-    private fun UploadPost() {
+    private fun UploadPost(myUserID: String?) {
 
         val title = binding.textBox1Try.text.toString()
         if (title.isEmpty()) {
@@ -72,12 +75,12 @@ class FragmentNewPostTry : Fragment() {
         val postID = databaseReferencePost.push().key!!.toString() // Generate a unique key for the post
         var post: Post? = null
 
-        var userID: String? = null
+        var userID: String = myUserID ?: ""
         val currentUser = auth.currentUser
 
         // Check if the user is logged in
-        if (currentUser != null) {
-            userID = currentUser.uid
+        if (myUserID != null) {
+            userID = myUserID ?: ""
             Toast.makeText(context, "User ID: $userID", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
@@ -92,7 +95,7 @@ class FragmentNewPostTry : Fragment() {
 
                             // Get the download URL
                             val imgUrl = url.toString()
-                            post = Post(title, "TEST", imgUrl, postID) // TODO!! - Get the userID from the user object
+                            post = Post(title, userID, imgUrl, postID) // TODO!! - Get the userID from the user object
 
                             // Add the post to the database
                             databaseReferencePost.child(postID).setValue(post?.toMap())

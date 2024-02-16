@@ -25,7 +25,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var databaseReferenceExpert: DatabaseReference
     private lateinit var myUser: User
     private lateinit var extraExpertAmateur : String
-
+    private lateinit var usernameExtra : String
+    private lateinit var userid : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +54,11 @@ class LoginActivity : AppCompatActivity() {
             isUserExist(username, password) { isExist ->
                 if (isExist) {
                     Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                    val homePageIntent = Intent(this, HomePageAmateur::class.java) //
+                    val homePageIntent = Intent(this, HomePageAmateur::class.java)
+//                    val myUserID = activity?.intent?.getStringExtra("my_user_id")
+//                    val myUsername = activity?.intent?.getStringExtra("username")
+                    homePageIntent.putExtra("my_user_id", userid)
+                    homePageIntent.putExtra("username", usernameExtra)
                     startActivity(homePageIntent)
                 } else {
                     Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
@@ -78,6 +83,8 @@ class LoginActivity : AppCompatActivity() {
                         val userPassword = amateurUser.child("password").getValue(String::class.java)
                         if (userPassword == password) { // If the user password is right, set the isExist variable to 1
                             isExist = true
+                            usernameExtra = amateurUser.child("username").getValue(String::class.java).toString()
+                            userid = amateurUser.key.toString()
                             callback(isExist)
                             return
                         }
