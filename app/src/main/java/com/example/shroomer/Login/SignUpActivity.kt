@@ -34,6 +34,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var uploadButton: Button
     private lateinit var spinner: Spinner
     private lateinit var filePath: Uri
+    private lateinit var pdfUrl: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpPageBinding.inflate(layoutInflater)
@@ -106,7 +107,12 @@ class SignUpActivity : AppCompatActivity() {
                     if (selectedItem == "Amateur") {
                         signUpAmateur(username, email, password)
                     } else {
-                        signUpExpert(username, email, password)
+                        if (!(::pdfUrl.isInitialized)) {
+                            Toast.makeText(this, "Please upload certificate", Toast.LENGTH_SHORT).show()
+                        }
+                        else {
+                            signUpExpert(username, email, password)
+                        }
                     }
                 }
             }
@@ -187,7 +193,8 @@ class SignUpActivity : AppCompatActivity() {
             // File upload successful, get the download URL
             fileReference.downloadUrl.addOnSuccessListener { uri ->
                 // Handle the download URL (URI) as needed
-                val downloadUri = uri.toString()
+                pdfUrl = uri.toString()
+                Toast.makeText(this, "File uploaded at "+ pdfUrl, Toast.LENGTH_SHORT).show()
                 // Pass the download URI to the appropriate function
                 // e.g., signUpExpert(username, email, password, downloadUri)
             }.addOnFailureListener { exception ->
@@ -279,10 +286,11 @@ class SignUpActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) { // If the username already exists
                     Toast.makeText(this@SignUpActivity, "Username already exists", Toast.LENGTH_SHORT).show()
-                } else { // If the username does not exist
+                }
+                else { // If the username does not exist
                     val primraryKey = databaseReferenceExpert.push().key // Primary key for the database
                     var user: User? = null
-                    user = Expert(username, email, password, primraryKey.toString(), "uri")
+                    user = Expert(username, email, password, primraryKey.toString(), pdfUrl)
                     Toast.makeText(this@SignUpActivity, "Expert user created", Toast.LENGTH_SHORT).show()
                     databaseReferenceExpert.child(primraryKey!!).setValue(user.toMap()) // Add the user to the database with the primary key
                     startActivity(Intent(this@SignUpActivity, LoginActivity::class.java)) // Go to the login page

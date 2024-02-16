@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.util.LinkedList
 
-class Expert(username: String, email: String, password: String, user_id: String, certificateUri: String) :
+class Expert(username: String, email: String, password: String, user_id: String, certificateUrl: String) :
     User(username, email, password, user_id) {
 
         private lateinit var comments: LinkedList<Long>
@@ -14,7 +14,7 @@ class Expert(username: String, email: String, password: String, user_id: String,
     init {
         this.comments = LinkedList()
         this.likes = LinkedList()
-        this.certificate = certificateUri
+        this.certificate = certificateUrl
     }
 
     fun createComment(content: String, post: Post) {}
