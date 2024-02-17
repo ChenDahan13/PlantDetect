@@ -19,6 +19,11 @@ import androidx.fragment.app.Fragment
 import com.example.shroomer.Entities.Post
 import com.example.shroomer.Entities.User
 import com.example.shroomer.R
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -37,6 +42,7 @@ class CustomAdapter(context: Context, private val postsList: List<Post>) : Array
         // Bind data to views in the layout
         val postPhotoImageView = itemView?.findViewById<CircleImageView>(R.id.postlistphoto)
 //        postPhotoImageView?.setImageBitmap(currentPost.imageBitmap)
+        loadImageFromUrl(currentPost.imageBitmap, postPhotoImageView)
 
         val titleTextView = itemView?.findViewById<TextView>(R.id.title)
         titleTextView?.text = currentPost.title
@@ -57,7 +63,7 @@ class CustomAdapter(context: Context, private val postsList: List<Post>) : Array
 
 
 class FragmentHomePage :Fragment() {
-
+    private lateinit var databaseReferencePost: DatabaseReference
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,11 +80,9 @@ class FragmentHomePage :Fragment() {
         val myUserID = activity?.intent?.getStringExtra("my_user_id")
         val myUsername = activity?.intent?.getStringExtra("username")
         Toast.makeText(context, "Hello "+myUsername, Toast.LENGTH_SHORT).show()
-
+        fetchPosts()
 
         view.findViewById<TextView>(R.id.hello_user1).text="Hello "+myUserID+" !"
-
-
         return view
     }
 
@@ -87,37 +91,65 @@ class FragmentHomePage :Fragment() {
     }
     private fun fetchPosts() {
         val db = FirebaseFirestore.getInstance()
-        val storageRef = FirebaseStorage.getInstance().reference
         val postsList = mutableListOf<Post>()
-
-        db.collection("posts")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    val title = document.getString("title") ?: ""
-                    val userId = document.getString("user_id") ?: ""
-                    val imageUrl = document.getString("imageBitmap") ?: ""
-                    val postID = document.getString("post_id") ?: ""
-
-                    // Download image from Firebase Storage
-                    val imageRef: StorageReference = storageRef.child(imageUrl)
-                    imageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
-                        val imageBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                        val post = Post(title, userId, imageUrl, postID)
-                        postsList.add(post)
-                        updateAdapter(postsList)
-                    }.addOnFailureListener { exception ->
-                        Log.e(TAG, "Error downloading image", exception)
+        databaseReferencePost = FirebaseDatabase.getInstance().getReference("Post")
+        val postRef = FirebaseDatabase.getInstance().getReference("Post")
+        postRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val postTitleList = mutableListOf<String>()
+                val postList = mutableListOf<Post>()
+                for (postSnapshot in dataSnapshot.children) {
+                    val title = postSnapshot.child("title").getValue(String::class.java)
+                    val userId = postSnapshot.child("user_id").getValue(String::class.java)
+                    val imageUrl = postSnapshot.child("imageBitmap").getValue(String::class.java)
+                    val postID = postSnapshot.child("post_id").getValue(String::class.java)
+                    val post = Post(title ?: "", userId ?: "", imageUrl ?: "", postID ?: "")
+                    postList.add(post)
+                    title?.let {
+                        postTitleList.add(it)
                     }
                 }
-
                 updateAdapter(postsList)
+                Toast.makeText(requireContext(), "Retrieved ${postTitleList.size} posts", Toast.LENGTH_SHORT).show()
+                // Example: Displaying usernames in Logcat
+                for (title in postTitleList) {
+                    Log.d("post title", title)
+                }
             }
-            .addOnFailureListener { exception ->
-                Log.e(TAG, "Error fetching posts", exception)
-                // Handle error
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                // ...
             }
+        })
     }
+
+
+
+//        db.collection("Post")
+//            .get()
+//            .addOnSuccessListener { result ->
+//                for (document in result) {
+//                    val title = document.getString("title") ?: ""
+//                    val userId = document.getString("user_id") ?: ""
+//                    val imageUrl = document.getString("imageBitmap") ?: ""
+//                    val postID = document.getString("post_id") ?: ""
+//                    val post = Post(title, userId, imageUrl, postID)
+//                    postsList.add(post)
+//                }
+//                val length = postsList.size
+//                Toast.makeText(requireContext(), "Retrieved $length posts", Toast.LENGTH_SHORT).show()
+//
+//                // Update adapter with postsList after fetching all posts
+//                updateAdapter(postsList)
+//            }
+//            .addOnFailureListener { exception ->
+//                Log.e(TAG, "Error fetching posts", exception)
+//                Toast.makeText(requireContext(), "Error fetching posts", Toast.LENGTH_SHORT).show()
+//                // Handle error
+//            }
+//    }
     private fun updateAdapter(postsList: List<Post>) {
         val adapter = CustomAdapter(requireContext(), postsList)
         val listView = view?.findViewById<ListView>(R.id.posts_list_view)
