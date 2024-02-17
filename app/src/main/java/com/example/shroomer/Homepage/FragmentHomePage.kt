@@ -104,18 +104,21 @@ class FragmentHomePage :Fragment() {
                     val imageUrl = postSnapshot.child("imageBitmap").getValue(String::class.java)
                     val postID = postSnapshot.child("post_id").getValue(String::class.java)
                     val post = Post(title ?: "", userId ?: "", imageUrl ?: "", postID ?: "")
-                    postList.add(post)
+                    post?.let {
+                        postsList.add(it)
+                    }
                     title?.let {
                         postTitleList.add(it)
                     }
                 }
                 updateAdapter(postsList)
-                Toast.makeText(requireContext(), "Retrieved ${postTitleList.size} posts", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Retrieved ${postsList.size} posts", Toast.LENGTH_SHORT).show()
                 // Example: Displaying usernames in Logcat
                 for (title in postTitleList) {
                     Log.d("post title", title)
                 }
             }
+
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
