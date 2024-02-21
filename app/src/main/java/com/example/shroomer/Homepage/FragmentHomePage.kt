@@ -53,6 +53,17 @@ class CustomAdapter(context: Context, private val postsList: List<Post>) : Array
         val postIDTextView = itemView?.findViewById<TextView>(R.id.post_id_in_list)
         postIDTextView?.text = currentPost.post_id  // Assuming you want to display the post ID
 
+        itemView?.setOnClickListener(View.OnClickListener {
+            val fragmentPostView = FragmentPostView()
+            val bundle = Bundle()
+            bundle.putString("post_id", currentPost.post_id)
+            fragmentPostView.arguments = bundle
+            val transaction = (context as HomePageAmateur).supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragmentContainer, fragmentPostView)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        })
+
         return itemView!!
     }
 
@@ -65,7 +76,7 @@ class CustomAdapter(context: Context, private val postsList: List<Post>) : Array
 
 
 
-class FragmentHomePage :Fragment() {
+class FragmentHomePage : Fragment() {
     private lateinit var databaseReferencePost: DatabaseReference
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -86,9 +97,9 @@ class FragmentHomePage :Fragment() {
         fetchPosts()
 
         view.findViewById<TextView>(R.id.hello_user1).text="Hello "+myUserID+" !"
+
         return view
     }
-
     private fun setupViews(view: View){
 
     }
@@ -161,6 +172,5 @@ class FragmentHomePage :Fragment() {
         val listView = view?.findViewById<ListView>(R.id.posts_list_view)
         listView?.adapter = adapter
     }
-
 
 }

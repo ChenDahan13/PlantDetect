@@ -66,7 +66,7 @@ class HomePageAmateur : AppCompatActivity() {
 
     }
 
-    private fun  replaceFragment(fragment: Fragment){
+    private fun replaceFragment(fragment: Fragment){
         val fragmentManager = supportFragmentManager
         val currentFragment = fragmentManager.findFragmentById(R.id.fragmentContainer)
         if (currentFragment==null || currentFragment.javaClass!=fragment.javaClass){

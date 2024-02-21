@@ -76,7 +76,6 @@ class FragmentNewPostTry : Fragment() {
         var post: Post? = null
 
         var userID: String = myUserID ?: ""
-        val currentUser = auth.currentUser
 
         // Check if the user is logged in
         if (myUserID != null) {
