@@ -47,12 +47,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:background="#246eb9">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="#246eb9">
+
+                    <TextView
+                        android:id="@+id/post_title_view"
+                        android:layout_width="376dp"
+                        android:layout_height="match_parent"
+                        android:text="Post Title"
+                        android:textColor="#fdfffc"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
 
                     <TextView
                         android:id="@+id/post_owner_username"
@@ -60,8 +72,9 @@
                         android:layout_height="wrap_content"
                         android:fadingEdge="horizontal|vertical"
                         android:text="owner_user_name"
-                        android:textColor="@color/black"
-                        android:textSize="16dp" />
+                        android:textColor="#fdfffc"
+                        android:textSize="16dp"
+                        android:background="#246eb9"/>
 
 
                 </LinearLayout>
@@ -69,6 +82,7 @@
             </androidx.cardview.widget.CardView>
 
             <!-- Moved the ListView below the owner username -->
+
             <ListView
                 android:id="@+id/comments_list_view"
                 android:layout_width="match_parent"
