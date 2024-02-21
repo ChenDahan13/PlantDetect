@@ -10,7 +10,7 @@
         android:id="@+id/post_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#246eb9"
+        android:background="#f5ee9e"
         android:orientation="vertical">
 
         <ImageView
@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="#246eb9"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
@@ -40,7 +40,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#246eb9"
+            android:background="#f5ee9e"
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
@@ -48,20 +48,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#246eb9">
+                android:background="#f5ee9e">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#246eb9">
+                    android:background="#f5ee9e">
 
                     <TextView
                         android:id="@+id/post_title_view"
                         android:layout_width="376dp"
                         android:layout_height="match_parent"
                         android:text="Post Title"
-                        android:textColor="#fdfffc"
+                        android:textColor="#246eb9"
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
@@ -72,9 +72,9 @@
                         android:layout_height="wrap_content"
                         android:fadingEdge="horizontal|vertical"
                         android:text="owner_user_name"
-                        android:textColor="#fdfffc"
+                        android:textColor="#246eb9"
                         android:textSize="16dp"
-                        android:background="#246eb9"/>
+                        android:background="#f5ee9e"/>
 
 
                 </LinearLayout>
@@ -108,7 +108,7 @@
                     android:textStyle="bold"
                     android:text="Comment"
                     android:id="@+id/comment"
-                    android:textColor="@color/black"/>
+                    android:textColor="#246eb9"/>
 
             </androidx.cardview.widget.CardView>
 
