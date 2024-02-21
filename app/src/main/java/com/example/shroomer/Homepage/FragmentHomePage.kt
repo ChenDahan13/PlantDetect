@@ -50,6 +50,9 @@ class CustomAdapter(context: Context, private val postsList: List<Post>) : Array
         val usernameTextView = itemView?.findViewById<TextView>(R.id.username)
         usernameTextView?.text = currentPost.user_id  // Assuming you want to display the user ID
 
+        val postIDTextView = itemView?.findViewById<TextView>(R.id.post_id_in_list)
+        postIDTextView?.text = currentPost.post_id  // Assuming you want to display the post ID
+
         return itemView!!
     }
 

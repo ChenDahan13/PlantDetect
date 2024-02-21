@@ -19,7 +19,6 @@
             android:layout_height="275dp"
             android:layout_gravity="top"
             android:src="@drawable/post_image_example">
-
         </ImageView>
 
         <androidx.cardview.widget.CardView
