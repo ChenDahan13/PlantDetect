@@ -77,11 +77,28 @@
 
 
                 </LinearLayout>
-
             </androidx.cardview.widget.CardView>
+            <!-- Comment Input -->
+            <EditText
+                android:id="@+id/comment_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Add a comment..."
+                android:inputType="textMultiLine"
+                android:maxLines="3"
+                android:background="@android:color/white"
+                android:padding="10dp"
+                android:layout_margin="10dp"/>
 
+            <!-- Submit Button -->
+            <Button
+                android:id="@+id/submit_comment_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit Comment"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"/>
             <!-- Moved the ListView below the owner username -->
-
             <ListView
                 android:id="@+id/comments_list_view"
                 android:layout_width="match_parent"
@@ -113,5 +130,4 @@
 
         </LinearLayout>
     </LinearLayout>
-
 </FrameLayout>

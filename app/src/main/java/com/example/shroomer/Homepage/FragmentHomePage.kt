@@ -57,6 +57,7 @@ class CustomAdapter(context: Context, private val postsList: List<Post>) : Array
             val fragmentPostView = FragmentPostView()
             val bundle = Bundle()
             bundle.putString("post_id", currentPost.post_id)
+            bundle.putString("user_id", currentPost.user_id)
             fragmentPostView.arguments = bundle
             val transaction = (context as HomePageAmateur).supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragmentContainer, fragmentPostView)

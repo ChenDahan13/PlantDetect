@@ -4,7 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.shroomer.Entities.Comment
+import com.example.shroomer.Entities.User
+import com.example.shroomer.R
 import com.example.shroomer.databinding.FragmentPostViewBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -18,15 +22,18 @@ class FragmentPostView : Fragment() {
     private var _binding: FragmentPostViewBinding? = null
     private val binding get() = _binding!!
     private lateinit var postID: String
+    private lateinit var userID: String
 
     // Firebase references
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var databaseReferencePost: DatabaseReference
+    private lateinit var databaseReferenceComment: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             postID = it.getString("post_id").toString()
+            userID = it.getString("user_id").toString()
         }
     }
 
@@ -35,14 +42,24 @@ class FragmentPostView : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         _binding = FragmentPostViewBinding.inflate(inflater, container, false)
 
         // Create the database reference
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReferencePost = firebaseDatabase.reference.child("Post")
+        databaseReferenceComment = firebaseDatabase.reference.child("Comment")
 
         viewPost()
 
+        binding.submitCommentButton.setOnClickListener {
+            val comment = binding.commentInput.text.toString()
+            if (comment.isNotEmpty()) {
+                addComment(comment)
+            } else {
+                Toast.makeText(context, "Comment cannot be empty", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         return binding.root
     }
@@ -67,12 +84,21 @@ class FragmentPostView : Fragment() {
             }
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
-
             }
         })
     }
+
     // Function to load image from URL
     private fun loadImageFromUrl(imageUrl: String?) {
         Picasso.get().load(imageUrl).into(binding.postImageView)
+    }
+
+    // Add a comment to the post
+    private fun addComment(comment: String) {
+        val commentID = databaseReferenceComment.push().key.toString() // Generate a unique key for the comment
+        val newComment = Comment(commentID, comment, userID)
+        databaseReferenceComment.child(commentID).setValue(newComment.toMap())
+            .addOnSuccessListener { Toast.makeText(context, "Comment added", Toast.LENGTH_SHORT).show() }
+            .addOnFailureListener { Toast.makeText(context, "Failed to add comment", Toast.LENGTH_SHORT).show() }
     }
 }
