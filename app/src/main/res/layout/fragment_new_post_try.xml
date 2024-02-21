@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@drawable/homepage">
+    android:background="#F5EE9E">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical">
 
 
         <ImageView
@@ -23,7 +23,7 @@
             app:layout_constraintBottom_toTopOf="@+id/button_gallery_try"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/baseline_add_box_24"
-            tools:layout_editor_absoluteX="47dp"/>
+            tools:layout_editor_absoluteX="47dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_capture_try"
@@ -43,8 +43,8 @@
             android:id="@+id/button_gallery_try"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
             android:text="Select from gallery"
             app:layout_constraintBottom_toTopOf="@+id/editPostText_try"
             app:layout_constraintTop_toTopOf="parent"
@@ -55,27 +55,26 @@
             android:id="@+id/textBox1_try"
             android:layout_width="206dp"
             android:layout_height="131dp"
-            android:ems="10"
-            android:layout_marginTop="10dp"
-            android:hint="Description"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:background="@drawable/shapeemail"
+            android:ems="10"
+            android:hint="Description"
             android:textColor="@color/black"
-            android:textColorHint="@color/black"
             android:textColorHighlight="@color/black"
+            android:textColorHint="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.988"
             tools:layout_editor_absoluteX="102dp" />
 
         <Button
+            android:id="@+id/confirm_button_try"
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:text="Confirm Upload Post"
-            android:id="@+id/confirm_button_try"
-            />
+            android:layout_marginTop="10dp"
+            android:text="Confirm Upload Post" />
 
     </LinearLayout>
 
