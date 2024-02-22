@@ -74,13 +74,15 @@ class FragmentPostView : Fragment() {
         databaseReferencePost = firebaseDatabase.reference.child("Post")
         databaseReferenceComment = firebaseDatabase.reference.child("Comment")
 
+        val myUser_id = activity?.intent?.getStringExtra("my_user_id")
+
         viewPost()
         showComments()
 
         binding.submitCommentButton.setOnClickListener {
             val comment = binding.commentInput.text.toString()
             if (comment.isNotEmpty()) {
-                addComment(comment)
+                addComment(comment, myUser_id)
             } else {
                 Toast.makeText(context, "Comment cannot be empty", Toast.LENGTH_SHORT).show()
             }
@@ -109,6 +111,7 @@ class FragmentPostView : Fragment() {
             }
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
+                Toast.makeText(context, "Failed to read comments", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -143,9 +146,14 @@ class FragmentPostView : Fragment() {
     }
 
     // Add a comment to the post
-    private fun addComment(comment: String) {
+    private fun addComment(comment: String, myUser_id: String?) {
         val commentID = databaseReferenceComment.push().key.toString() // Generate a unique key for the comment
-        val newComment = Comment(commentID, comment, userID, postID)
+        val user_id_comment_creator = myUser_id ?: ""
+        if (myUser_id == null) {
+            Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
+        }
+        Toast.makeText(context, "User ID: $user_id_comment_creator", Toast.LENGTH_SHORT).show()
+        val newComment = Comment(commentID, comment, user_id_comment_creator, postID)
         databaseReferenceComment.child(commentID).setValue(newComment.toMap())
             .addOnSuccessListener { Toast.makeText(context, "Comment added", Toast.LENGTH_SHORT).show() }
             .addOnFailureListener { Toast.makeText(context, "Failed to add comment", Toast.LENGTH_SHORT).show() }

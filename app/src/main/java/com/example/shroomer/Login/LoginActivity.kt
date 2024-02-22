@@ -55,8 +55,6 @@ class LoginActivity : AppCompatActivity() {
                 if (isExist) {
                     Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                     val homePageIntent = Intent(this, HomePageAmateur::class.java)
-//                    val myUserID = activity?.intent?.getStringExtra("my_user_id")
-//                    val myUsername = activity?.intent?.getStringExtra("username")
                     homePageIntent.putExtra("my_user_id", userid)
                     homePageIntent.putExtra("username", usernameExtra)
                     startActivity(homePageIntent)
@@ -86,7 +84,6 @@ class LoginActivity : AppCompatActivity() {
                             usernameExtra = amateurUser.child("username").getValue(String::class.java).toString()
                             userid = amateurUser.key.toString()
                             callback(isExist)
-                            return
                         }
                     }
                 }
@@ -104,11 +101,11 @@ class LoginActivity : AppCompatActivity() {
                         val userPassword = expertUser.child("password").getValue(String::class.java)
                         if (userPassword == password) { // If the user password is right, set the isExist variable to 1
                             isExist = true
+                            usernameExtra = expertUser.child("username").getValue(String::class.java).toString()
+                            userid = expertUser.key.toString()
                             callback(isExist)
-                            return
                         } else { // Password is wrong
                             callback(isExist)
-                            return
                         }
                     }
                 } else {
