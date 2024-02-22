@@ -27,7 +27,7 @@
                 android:layout_marginStart="20dp"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/title"
+                    android:id="@+id/username_who_commented"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#246eb9"
@@ -36,7 +36,7 @@
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/username"
+                    android:id="@+id/comment_contents"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"

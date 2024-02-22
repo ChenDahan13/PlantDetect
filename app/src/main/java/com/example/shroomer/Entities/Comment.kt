@@ -6,6 +6,7 @@ class Comment(
     private var comment_id: String,
     private var content: String,
     private var user_id: String,
+    private var post_id: String,
     private var like_count: Int=0
 ) {
     private lateinit var likedBy: LinkedList<Long>
@@ -30,6 +31,19 @@ class Comment(
             "comment_id" to this.comment_id,
             "content" to this.content,
             "user_id" to this.user_id,
+            "post_id" to this.post_id,
         )
+    }
+    fun getCommentId(): String {
+        return this.comment_id
+    }
+    fun getContent(): String {
+        return this.content
+    }
+    fun getUserId(): String {
+        return this.user_id
+    }
+    fun getPostId(): String {
+        return this.post_id
     }
 }

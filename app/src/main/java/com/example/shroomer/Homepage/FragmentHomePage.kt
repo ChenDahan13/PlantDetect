@@ -102,7 +102,7 @@ class FragmentHomePage : Fragment() {
         return view
     }
     private fun setupViews(view: View){
-
+        // TODO: Implement the setup of views
     }
     private fun fetchPosts() {
         val db = FirebaseFirestore.getInstance()
