@@ -18,8 +18,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import java.util.LinkedList
 
 class commentAdapter(context: Context, private val commentList: List<Comment>) : ArrayAdapter<Comment>(context, 0, commentList) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -29,12 +31,15 @@ class commentAdapter(context: Context, private val commentList: List<Comment>) :
         }
         val currentComment = commentList[position]
 
-        // Bind data to views in the layout
+        // Bind data to views in the layout content
         val commentContent = itemView?.findViewById<TextView>(R.id.comment_contents)
         commentContent?.text = currentComment.getContent()
-
+        // Bind data to views in the layout owner
         val commentOwner = itemView?.findViewById<TextView>(R.id.username_who_commented)
         commentOwner?.text = currentComment.getUserId()
+        // Set the comment ID as the tag for the like icon
+        val likeIcon = itemView?.findViewById<TextView>(R.id.number_of_likes)
+        likeIcon?.tag = currentComment.getCommentId()
 
         return itemView!!
     }
@@ -46,7 +51,7 @@ class FragmentPostView : Fragment() {
     private var _binding: FragmentPostViewBinding? = null
     private val binding get() = _binding!!
     private lateinit var postID: String
-    private lateinit var userID: String
+    private lateinit var userOfPostID: String
 
     // Firebase references
     private lateinit var firebaseDatabase: FirebaseDatabase
@@ -57,7 +62,7 @@ class FragmentPostView : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             postID = it.getString("post_id").toString()
-            userID = it.getString("user_id").toString()
+            userOfPostID = it.getString("user_id").toString()
         }
     }
 
@@ -93,27 +98,31 @@ class FragmentPostView : Fragment() {
 
     // Show the comment of the post
     private fun showComments() {
-        databaseReferenceComment.orderByChild("post_id").equalTo(postID).addValueEventListener(object :
-            ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val commentList = mutableListOf<Comment>()
-                for (commentSnapshot in snapshot.children) {
-                    val content = commentSnapshot.child("content").getValue(String::class.java)
-                    val user_id = commentSnapshot.child("user_id").getValue(String::class.java)
-                    val comment_id = commentSnapshot.child("comment_id").getValue(String::class.java)
-                    val post_id = commentSnapshot.child("post_id").getValue(String::class.java)
-                    val comment = Comment(comment_id?: "", content?: "", user_id?: "", post_id?: "")
-                    comment?.let {
-                        commentList.add(it)
+        databaseReferenceComment.orderByChild("post_id").equalTo(postID)
+            .addValueEventListener(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val commentList = mutableListOf<Comment>()
+                    for (commentSnapshot in snapshot.children) {
+                        val content = commentSnapshot.child("content").getValue(String::class.java)
+                        val user_id = commentSnapshot.child("user_id").getValue(String::class.java)
+                        val comment_id =
+                            commentSnapshot.child("comment_id").getValue(String::class.java)
+                        val post_id = commentSnapshot.child("post_id").getValue(String::class.java)
+                        val comment =
+                            Comment(comment_id ?: "", content ?: "", user_id ?: "", post_id ?: "")
+                        comment?.let {
+                            commentList.add(it)
+                        }
                     }
+                    updateAdapter(commentList)
                 }
-                updateAdapter(commentList)
-            }
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Toast.makeText(context, "Failed to read comments", Toast.LENGTH_SHORT).show()
-            }
-        })
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Toast.makeText(context, "Failed to read comments", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     // Show the post content
@@ -134,8 +143,10 @@ class FragmentPostView : Fragment() {
 
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
+                Toast.makeText(context, "Failed to read post", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -148,15 +159,24 @@ class FragmentPostView : Fragment() {
     // Add a comment to the post
     private fun addComment(comment: String, myUser_id: String?) {
         val commentID = databaseReferenceComment.push().key.toString() // Generate a unique key for the comment
-        val user_id_comment_creator = myUser_id ?: ""
-        if (myUser_id == null) {
+        val user_id_comment_creator = myUser_id
+        if (user_id_comment_creator == null) {
             Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
+            return
         }
         Toast.makeText(context, "User ID: $user_id_comment_creator", Toast.LENGTH_SHORT).show()
         val newComment = Comment(commentID, comment, user_id_comment_creator, postID)
         databaseReferenceComment.child(commentID).setValue(newComment.toMap())
-            .addOnSuccessListener { Toast.makeText(context, "Comment added", Toast.LENGTH_SHORT).show() }
-            .addOnFailureListener { Toast.makeText(context, "Failed to add comment", Toast.LENGTH_SHORT).show() }
+            .addOnSuccessListener {
+                Toast.makeText(context, "Comment added", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(
+                    context,
+                    "Failed to add comment",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
     // Update the adapter with the comments
@@ -165,4 +185,38 @@ class FragmentPostView : Fragment() {
         val listView = view?.findViewById<ListView>(R.id.comments_list_view)
         listView?.adapter = adapter
     }
+
+//    private fun incrementLikes(comment_id: String) {
+//        val myUserId = activity?.intent?.getStringExtra("my_user_id")
+//        var numberOfLikes = view?.findViewById<TextView>(R.id.number_of_likes)
+//        if (myUserId == null) {
+//            Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
+//            return
+//        }
+//        databaseReferenceComment.orderByChild("comment_id").equalTo(comment_id)
+//            .addListenerForSingleValueEvent(object : ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    for (commentSnapshot in snapshot.children) {
+//                        val comment = commentSnapshot.getValue(Comment::class.java)
+//                        if (comment != null) {
+//                            comment.addLike(myUserId)
+//                            numberOfLikes?.text = comment.getLikeCount().toString()
+//                            databaseReferenceComment.child(comment_id).setValue(comment.toMap())
+//                                .addOnSuccessListener { Toast.makeText(context, "Like added", Toast.LENGTH_SHORT).show() }
+//                                .addOnFailureListener { Toast.makeText(context, "Failed to add like", Toast.LENGTH_SHORT).show() }
+//                        }
+//                    }
+//                }
+//                override fun onCancelled(error: DatabaseError) {
+//                    // Failed to read value
+//                    Toast.makeText(context, "Failed to read comment", Toast.LENGTH_SHORT).show()
+//                }
+//            })
+//    }
+//
+//    // Increment the number of likes for the post
+//    fun incrementLikes(view: View) {
+//        val  comment_id = view.tag.toString()
+//        incrementLikes(comment_id)
+//    }
 }

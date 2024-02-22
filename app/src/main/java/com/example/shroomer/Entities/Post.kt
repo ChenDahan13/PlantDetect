@@ -6,7 +6,7 @@ import java.util.LinkedList
 
 class Post (var title: String, var user_id: String , var imageBitmap: String, var post_id: String)
 {
-    private lateinit var comments: LinkedList<Comment>
+    private lateinit var comments: LinkedList<String>
 
     init {
         this.comments = LinkedList()
@@ -21,7 +21,13 @@ class Post (var title: String, var user_id: String , var imageBitmap: String, va
         )
     }
 
-    fun Post.addComment(comment : Comment){
-        this.comments.add(comment)
+    fun addComment(comment_id : String){
+        this.comments.add(comment_id)
+    }
+
+    fun removeComment(comment_id: String){
+        if(comments.contains(comment_id)){
+            this.comments.remove(comment_id)
+        }
     }
 }

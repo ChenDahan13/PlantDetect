@@ -76,10 +76,4 @@ class HomePageAmateur : AppCompatActivity() {
             fragmentTransaction.commit()
         }
     }
-//    val loginButton: Button = findViewById(R.id.login_button)
-
-//    signupButton.setOnClickListener {
-//        val signUpIntent = Intent(this, SignUpPage::class.java)
-//        startActivity(signUpIntent)
-//    }
 }

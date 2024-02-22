@@ -13,14 +13,6 @@
             android:layout_marginVertical="10dp"
             android:orientation="horizontal">
 
-<!--            <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                android:layout_width="80dp"-->
-<!--                android:layout_height="80dp"-->
-<!--                android:layout_marginStart="20dp"-->
-<!--                android:src="@drawable/toad_mushroom"-->
-<!--                android:id="@+id/postlistphoto"-->
-<!--                />-->
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,13 +35,19 @@
                     android:textColor="#246eb9"
                     android:textSize="15dp"
                     android:text="Comment contents"/>
+
                 <TextView
+                    android:id="@+id/number_of_likes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:textColor="#f06543"
+                    android:textColor="#246eb9"
                     android:textSize="15dp"
-                    android:text="Likes" />
+                    android:drawableLeft="@drawable/baseline_favorite_24"
+                    android:text="0"
+                    android:clickable="true"
+                    android:onClick="incrementLikes"
+                    android:tag="@{currentComment.commentId}"/>
 
 
 

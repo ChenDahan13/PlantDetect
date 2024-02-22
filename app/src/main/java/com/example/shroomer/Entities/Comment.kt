@@ -9,30 +9,37 @@ class Comment(
     private var post_id: String,
     private var like_count: Int=0
 ) {
-    private lateinit var likedBy: LinkedList<Long>
+    private lateinit var likedBy: LinkedList<String>
 
     init {
         this.likedBy = LinkedList()
     }
 
-    fun Comment.addLike(user_id: Long){
-        this.likedBy.add(user_id)
-        this.like_count++
+    fun addLike(user_id: String) {
+        if (!likedBy.contains(user_id)) {
+                this.likedBy.add(user_id)
+                this.like_count++
+        }
     }
 
-    fun Comment.removeLike(user_id: Long){
-        if(likedBy.contains(user_id)){
+    fun removeLike(user_id: String){
+        if(likedBy.contains(user_id) && this.like_count > 0) {
             this.like_count--
             this.likedBy.remove(user_id)
         }
     }
     open fun toMap(): Map<String, Any> {
-        return mapOf(
+        val map = mutableMapOf(
             "comment_id" to this.comment_id,
             "content" to this.content,
             "user_id" to this.user_id,
             "post_id" to this.post_id,
         )
+        // Add the likedBy field if it's initialized
+        if (::likedBy.isInitialized) {
+            map["likedBy"] = likedBy.joinToString{ "," }
+        }
+        return map
     }
     fun getCommentId(): String {
         return this.comment_id
@@ -46,4 +53,8 @@ class Comment(
     fun getPostId(): String {
         return this.post_id
     }
+    fun getLikeCount(): Int {
+        return this.like_count
+    }
+
 }
