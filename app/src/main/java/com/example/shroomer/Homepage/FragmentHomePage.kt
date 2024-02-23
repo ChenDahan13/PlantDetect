@@ -48,10 +48,9 @@ class CustomAdapter(context: Context, private val postsList: List<Post>) : Array
         titleTextView?.text = currentPost.title
 
         val usernameTextView = itemView?.findViewById<TextView>(R.id.username)
-        usernameTextView?.text = currentPost.user_id  // Assuming you want to display the user ID
-
-        val postIDTextView = itemView?.findViewById<TextView>(R.id.post_id_in_list)
-        postIDTextView?.text = currentPost.post_id  // Assuming you want to display the post ID
+        getUsername(currentPost.user_id) { username ->
+            usernameTextView?.text = username
+        }
 
         itemView?.setOnClickListener(View.OnClickListener {
             val fragmentPostView = FragmentPostView()
@@ -73,9 +72,50 @@ class CustomAdapter(context: Context, private val postsList: List<Post>) : Array
         // Example using Picasso:
         Picasso.get().load(url).into(imageView)
     }
+
+    private fun getUsername(user_id: CharSequence, callback: (String) -> Unit) {
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val databaseReferenceA = firebaseDatabase.reference.child("Amateur")
+        val databaseReferenceE = firebaseDatabase.reference.child("Expert")
+
+        databaseReferenceA.orderByChild("user_id").equalTo(user_id.toString())
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (amateurSnapshot in snapshot.children) {
+                            val username = amateurSnapshot.child("username").getValue(String::class.java).toString()
+                            callback(username)
+                            return
+                        }
+                    } else {
+                        databaseReferenceE.orderByChild("user_id").equalTo(user_id.toString())
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    if (snapshot.exists()) {
+                                        for (expertSnapshot in snapshot.children) {
+                                            val username = expertSnapshot.child("username").getValue(String::class.java).toString()
+                                            callback(username)
+                                            return
+                                        }
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    // Failed to read value
+                                    Toast.makeText(context, "Failed to read user", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Toast.makeText(context, "Failed to read user", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
 }
-
-
 
 class FragmentHomePage : Fragment() {
     private lateinit var databaseReferencePost: DatabaseReference
@@ -97,7 +137,7 @@ class FragmentHomePage : Fragment() {
         Toast.makeText(context, "Hello "+myUsername, Toast.LENGTH_SHORT).show()
         fetchPosts()
 
-        view.findViewById<TextView>(R.id.hello_user1).text="Hello "+myUserID+" !"
+        view.findViewById<TextView>(R.id.hello_user1).text="Hello "+myUsername+" !"
 
         return view
     }

@@ -183,7 +183,10 @@ class FragmentPostView : Fragment() {
 
                     // Set the post content
                     binding.postTitleView.text = title
-                    binding.postOwnerUsername.text = userId
+                    // Set the post owner
+                    getUsername(userId.toString()) { username ->
+                        binding.postOwnerUsername.text = username
+                    }
                     // Load image
                     loadImageFromUrl(imageUrl)
 
@@ -223,6 +226,48 @@ class FragmentPostView : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+    }
+
+    private fun getUsername(user_id: String, callback: (String) -> Unit) {
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val databaseReferenceA = firebaseDatabase.reference.child("Amateur")
+        val databaseReferenceE = firebaseDatabase.reference.child("Expert")
+
+        databaseReferenceA.orderByChild("user_id").equalTo(user_id.toString())
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (amateurSnapshot in snapshot.children) {
+                            val username = amateurSnapshot.child("username").getValue(String::class.java).toString()
+                            callback(username)
+                            return
+                        }
+                    } else {
+                        databaseReferenceE.orderByChild("user_id").equalTo(user_id.toString())
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    if (snapshot.exists()) {
+                                        for (expertSnapshot in snapshot.children) {
+                                            val username = expertSnapshot.child("username").getValue(String::class.java).toString()
+                                            callback(username)
+                                            return
+                                        }
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    // Failed to read value
+                                    Toast.makeText(context, "Failed to read user", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Toast.makeText(context, "Failed to read user", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     // Update the adapter with the comments
