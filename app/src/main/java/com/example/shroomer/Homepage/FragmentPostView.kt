@@ -1,5 +1,6 @@
 package com.example.shroomer.Homepage
 
+import android.content.ComponentCallbacks
 import android.widget.ArrayAdapter
 import android.content.Context
 import android.os.Bundle
@@ -24,6 +25,7 @@ import com.squareup.picasso.Picasso
 import java.util.LinkedList
 
 class commentAdapter(context: Context, private val commentList: List<Comment>) : ArrayAdapter<Comment>(context, 0, commentList) {
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var itemView = convertView
         if (itemView == null) {
@@ -36,12 +38,56 @@ class commentAdapter(context: Context, private val commentList: List<Comment>) :
         commentContent?.text = currentComment.getContent()
         // Bind data to views in the layout owner
         val commentOwner = itemView?.findViewById<TextView>(R.id.username_who_commented)
-        commentOwner?.text = currentComment.getUserId()
+        getUsername(currentComment.getUserId()) { username ->
+            commentOwner?.text = username
+        }
         // Set the comment ID as the tag for the like icon
         val likeIcon = itemView?.findViewById<TextView>(R.id.number_of_likes)
         likeIcon?.tag = currentComment.getCommentId()
 
         return itemView!!
+    }
+
+    private fun getUsername(user_id: CharSequence, callback: (String) -> Unit) {
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val databaseReferenceA = firebaseDatabase.reference.child("Amateur")
+        val databaseReferenceE = firebaseDatabase.reference.child("Expert")
+
+        databaseReferenceA.orderByChild("user_id").equalTo(user_id.toString())
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (amateurSnapshot in snapshot.children) {
+                            val username = amateurSnapshot.child("username").getValue(String::class.java).toString()
+                            callback(username)
+                            return
+                        }
+                    } else {
+                        databaseReferenceE.orderByChild("user_id").equalTo(user_id.toString())
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    if (snapshot.exists()) {
+                                        for (expertSnapshot in snapshot.children) {
+                                            val username = expertSnapshot.child("username").getValue(String::class.java).toString()
+                                            callback(username)
+                                            return
+                                        }
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    // Failed to read value
+                                    Toast.makeText(context, "Failed to read user", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Toast.makeText(context, "Failed to read user", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
 }
