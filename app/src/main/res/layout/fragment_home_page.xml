@@ -9,6 +9,7 @@
     tools:context=".Homepage.HomePageAmateur">
 
     <SearchView
+        android:id="@+id/posts_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -45,6 +46,6 @@
             android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>
-    -->
+
 
 </FrameLayout>
