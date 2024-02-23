@@ -98,6 +98,7 @@ class FragmentPostView : Fragment() {
     private val binding get() = _binding!!
     private lateinit var postID: String
     private lateinit var userOfPostID: String
+    private var isAmateur: Boolean = false // True if the user is an amateur, false if the user is an expert
 
     // Firebase references
     private lateinit var firebaseDatabase: FirebaseDatabase
@@ -127,19 +128,44 @@ class FragmentPostView : Fragment() {
 
         val myUser_id = activity?.intent?.getStringExtra("my_user_id")
 
+        typeUserCheck(myUser_id.toString()) // Check if the user is an amateur or an expert
         viewPost()
         showComments()
 
         binding.submitCommentButton.setOnClickListener {
-            val comment = binding.commentInput.text.toString()
-            if (comment.isNotEmpty()) {
-                addComment(comment, myUser_id)
+            if (isAmateur) {
+                Toast.makeText(context, "Amateurs can't comment", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(context, "Comment cannot be empty", Toast.LENGTH_SHORT).show()
+                val comment = binding.commentInput.text.toString()
+                if (comment.isNotEmpty()) {
+                    addComment(comment, myUser_id)
+                } else {
+                    Toast.makeText(context, "Comment cannot be empty", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
         return binding.root
+    }
+
+    // Check if the user is an amateur or an expert
+    private fun typeUserCheck(myUser_id: String) {
+        val databaseReferenceA = firebaseDatabase.reference.child("Amateur")
+
+        databaseReferenceA.orderByChild("user_id").equalTo(myUser_id)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        isAmateur = true
+                    } else {
+                        isAmateur = false
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Toast.makeText(context, "Failed to read user", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     // Show the comment of the post
