@@ -11,6 +11,7 @@ import android.widget.Toast
 import android.view.View
 import android.widget.Button
 import android.app.Activity
+import android.util.Patterns
 import com.example.shroomer.Entities.Amateur
 import com.example.shroomer.Entities.Expert
 import com.example.shroomer.Entities.User
@@ -88,6 +89,11 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            // Check if the email is valid
+            if (!isValidEmail(email)) {
+                Toast.makeText(this, "Invalid email", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             // Check if the password and the confirm password are the same
             if (password != confirmPassword) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
@@ -119,6 +125,11 @@ class SignUpActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    // Function to validate the email format
+    private fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
