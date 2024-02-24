@@ -5,4 +5,5 @@
         <item>Amateur</item>
         <item>Expert</item>
     </string-array>
+    <string name="title_activity_post_upload_page">PostUploadPage</string>
 </resources>

@@ -9,7 +9,7 @@ class HomePageAmateur : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page_amateur)
 
-        val newpostButton = findViewById<Button>(R.id.bottom_navigation)
+        val newpostButton: Button = findViewById(R.id.bottom_navigation)
         newpostButton.setOnClickListener {
             val newPostIntent = Intent(this, PostUploadPage::class.java)
             startActivity(newPostIntent)
