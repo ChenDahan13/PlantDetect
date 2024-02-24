@@ -13,6 +13,7 @@ import android.content.Intent
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.ListView
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -30,7 +31,7 @@ import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
-class CustomAdapter(context: Context, private val postsList: List<Post>) : ArrayAdapter<Post>(context, 0, postsList) {
+class CustomAdapter(context: Context, private var postsList: List<Post>) : ArrayAdapter<Post>(context, 0, postsList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var itemView = convertView
@@ -65,6 +66,11 @@ class CustomAdapter(context: Context, private val postsList: List<Post>) : Array
         })
 
         return itemView!!
+    }
+
+    fun searchDataList(searchList: List<Post>) {
+        postsList = searchList
+        notifyDataSetChanged()
     }
 
     private fun loadImageFromUrl(url: String, imageView: ImageView?) {
@@ -135,7 +141,7 @@ class FragmentHomePage : Fragment() {
         val myUserID = activity?.intent?.getStringExtra("my_user_id")
         val myUsername = activity?.intent?.getStringExtra("username")
         Toast.makeText(context, "Hello "+myUsername, Toast.LENGTH_SHORT).show()
-        fetchPosts()
+        fetchPosts(view)
 
         view.findViewById<TextView>(R.id.hello_user1).text="Hello "+myUsername+" !"
 
@@ -144,7 +150,7 @@ class FragmentHomePage : Fragment() {
     private fun setupViews(view: View){
         // TODO: Implement the setup of views
     }
-    private fun fetchPosts() {
+    private fun fetchPosts(view: View) {
         val db = FirebaseFirestore.getInstance()
         val postsList = mutableListOf<Post>()
         databaseReferencePost = FirebaseDatabase.getInstance().getReference("Post")
@@ -181,9 +187,24 @@ class FragmentHomePage : Fragment() {
                 // ...
             }
         })
+
+        view.findViewById<SearchView>(R.id.posts_search_view).setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+               return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                val searchList = ArrayList<Post>()
+                for (post in postsList) {
+                    if (post.title.toLowerCase().contains(newText.toLowerCase())) {
+                        searchList.add(post)
+                    }
+                }
+                updateAdapter(searchList)
+                return true
+            }
+        })
     }
-
-
 
 //        db.collection("Post")
 //            .get()
