@@ -31,7 +31,9 @@ class HomePageAmateur : AppCompatActivity() {
         val fragmentHomePage = FragmentHomePage()
         val fragmentMyProfile = FragmentMyProfile()
         val fragmentNewPostTry = FragmentNewPostTry()
+        val fragmentMapPage = mapPage()
 
+        fragmentMapPage.arguments = bundle
         fragmentNewPostTry.arguments = bundle
         fragmentHomePage.arguments = bundle
         fragmentMyProfile.arguments = bundle
@@ -56,6 +58,11 @@ class HomePageAmateur : AppCompatActivity() {
                     val myProfilePage = Intent(this, MyProfile::class.java) //
                     startActivity(myProfilePage)*/
                     replaceFragment(fragmentMyProfile)
+                    true
+                }
+                R.id.bottom_map ->{
+                    Log.i("MAP NAVIGATION", savedInstanceState.toString())
+                    replaceFragment(fragmentMapPage)
                     true
                 }
                 else->false

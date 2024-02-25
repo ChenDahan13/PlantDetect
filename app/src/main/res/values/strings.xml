@@ -10,4 +10,5 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="google_map_api_key">AIzaSyAHXNf7UR9ePB16PXTMde1zxu7QOi-bDkI</string>
 </resources>

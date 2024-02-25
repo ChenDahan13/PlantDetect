@@ -12,6 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shroomer"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_map_api_key" />
+
+        <activity
+            android:name=".Homepage.mapPage"
+            android:exported="false" />
         <activity
             android:name=".Homepage.HomePageAmateur"
             android:exported="false" />

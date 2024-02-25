@@ -49,6 +49,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.libraries.places:places:3.3.0")
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.google.firebase:firebase-firestore-ktx:24.10.2")
