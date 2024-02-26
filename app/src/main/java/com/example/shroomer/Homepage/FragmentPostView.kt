@@ -4,6 +4,7 @@ import android.content.ComponentCallbacks
 import android.widget.ArrayAdapter
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,11 +42,46 @@ class commentAdapter(context: Context, private val commentList: List<Comment>) :
         getUsername(currentComment.getUserId()) { username ->
             commentOwner?.text = username
         }
+
         // Set the comment ID as the tag for the like icon
         val likeIcon = itemView?.findViewById<TextView>(R.id.number_of_likes)
         likeIcon?.tag = currentComment.getCommentId()
+        fetchNumberOfLikes(currentComment.getCommentId()) { numberOfLikes ->
+            likeIcon?.text = numberOfLikes.toString()
+        }
+        likeIcon!!.setOnClickListener {
+            incrementLikes(it, currentComment.getUserId())
+            fetchNumberOfLikes(currentComment.getCommentId()) { numberOfLikes ->
+                likeIcon.text = numberOfLikes.toString()
+            }
+        }
+
 
         return itemView!!
+    }
+    private fun fetchNumberOfLikes(commentId: String, callback: (Int) -> Unit) {
+        val likesRef = FirebaseDatabase.getInstance().getReference("Comment").child(commentId).child("likes")
+        likesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val numberOfLikes = snapshot.childrenCount.toInt() // Get the count of children under "likes"
+                callback(numberOfLikes)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+                Log.e("fetchNumberOfLikes", "Error fetching number of likes: ${error.message}")
+            }
+        })
+    }
+
+    fun incrementLikes(view: View, myUser_id: String) {
+        try {
+            val comment_id = view.tag.toString()
+            val commentRef = FirebaseDatabase.getInstance().getReference("Comment").child(comment_id).child("likes").child(myUser_id)
+            commentRef.setValue(true)
+        } catch (e: Exception) {
+            Log.e("incrementLikes", "Error updating database: ${e.message}")
+        }
     }
 
     private fun getUsername(user_id: CharSequence, callback: (String) -> Unit) {
@@ -330,8 +366,10 @@ class FragmentPostView : Fragment() {
 //                }
 //            })
 //    }
-//
-//    // Increment the number of likes for the post
+
+
+
+    // Increment the number of likes for the post
 //    fun incrementLikes(view: View) {
 //        val  comment_id = view.tag.toString()
 //        incrementLikes(comment_id)
