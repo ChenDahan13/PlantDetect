@@ -78,7 +78,34 @@ class commentAdapter(context: Context, private val commentList: List<Comment>) :
         try {
             val comment_id = view.tag.toString()
             val commentRef = FirebaseDatabase.getInstance().getReference("Comment").child(comment_id).child("likes").child(myUser_id)
-            commentRef.setValue(true)
+            // Check if the user has already liked the comment
+            commentRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        // User has already liked the comment, so remove the like
+                        commentRef.removeValue()
+                            .addOnSuccessListener {
+                                Log.d("incrementLikes", "Like removed successfully")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("incrementLikes", "Error removing like: ${e.message}")
+                            }
+                    } else {
+                        // User hasn't liked the comment, so add the like
+                        commentRef.setValue(true)
+                            .addOnSuccessListener {
+                                Log.d("incrementLikes", "Like added successfully")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("incrementLikes", "Error adding like: ${e.message}")
+                            }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("incrementLikes", "Error checking like status: ${error.message}")
+                }
+            })
         } catch (e: Exception) {
             Log.e("incrementLikes", "Error updating database: ${e.message}")
         }
