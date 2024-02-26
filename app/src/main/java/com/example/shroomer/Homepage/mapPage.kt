@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.example.shroomer.Entities.MarkerClass
 import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 class mapPage : Fragment(), OnMapReadyCallback {
@@ -33,6 +34,8 @@ class mapPage : Fragment(), OnMapReadyCallback {
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var databaseReferenceMarker: DatabaseReference
+    private lateinit var myUserID: String
+    private var isExpert: Boolean = false // true if the user is an expert
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +47,10 @@ class mapPage : Fragment(), OnMapReadyCallback {
         // Create the database reference
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReferenceMarker = firebaseDatabase.reference.child("Marker")
+
+        // Get the user ID
+        myUserID = requireActivity().intent.getStringExtra("my_user_id").toString()
+        typeUserCheck() // Check if the user is an expert
 
         // Initialize the autocomplete support fragment
         Places.initialize(requireContext(), getString(R.string.google_map_api_key))
@@ -84,6 +91,26 @@ class mapPage : Fragment(), OnMapReadyCallback {
         return view
     }
 
+    // Check if the user is an expert
+    private fun typeUserCheck() {
+        val databaseRefE = firebaseDatabase.reference.child("Expert")
+
+        databaseRefE.orderByChild("user_id").equalTo(myUserID)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        isExpert = true
+                    } else {
+                        isExpert = false
+
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(context, "Error checking user type: ${error.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
     private fun changeMapType(itemId: Int) {
         when (itemId) {
             R.id.normal_map -> mGoogleMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
@@ -96,36 +123,38 @@ class mapPage : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
 
-        // Load saved markers
-        // loadMarkers()
+        // Load markers from Firebase
+        loadMarkers()
 
-        // Add a marker
-        mGoogleMap?.setOnMapClickListener {
-            showMarkerInputDialog(it)
+        // Add a marker only if the user is an expert
+        if (isExpert) {
+            // Add a marker
+            mGoogleMap?.setOnMapClickListener {
+                showMarkerInputDialog(it)
+            }
         }
    }
 
-//    // Load markers from Firebase
-//    private fun loadMarkers() {
-//        databaseReferenceMarker.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                for (markerSnapshot in snapshot.children) {
-//                    val marker = markerSnapshot.getValue(MarkerClass::class.java)
-//                    if (marker != null) {
-//                        val title = marker.getTitle()
-//                        val lat = marker.getLatitude()
-//                        val lng = marker.getLongitude()
-//                        Toast.makeText(context, "title: $title", Toast.LENGTH_SHORT).show()
-//                        Toast.makeText(context, "lat: $lat", Toast.LENGTH_SHORT).show()
-//                        Toast.makeText(context, "lng: $lng", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//            }
-//            override fun onCancelled(error: com.google.firebase.database.DatabaseError) {
-//                Toast.makeText(context, "Error loading markers", Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//    }
+    // Load markers from Firebase
+    private fun loadMarkers() {
+        databaseReferenceMarker.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (markerSnapshot in snapshot.children) {
+                    val lat = markerSnapshot.child("latitude").getValue(Double::class.java)
+                    val lng = markerSnapshot.child("longitude").getValue(Double::class.java)
+                    val title = markerSnapshot.child("title").getValue(String::class.java)
+                    if (lat != null && lng != null && title != null) {
+                        val latLng = com.google.android.gms.maps.model.LatLng(lat, lng)
+                        addSimpleMarkerWithoutSave(title, latLng)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Error loading markers: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 
     // Show a dialog to add a marker
     private fun showMarkerInputDialog(position: com.google.android.gms.maps.model.LatLng) {
@@ -149,7 +178,7 @@ class mapPage : Fragment(), OnMapReadyCallback {
         val lng = marker.position.longitude
         val title = marker.title.toString()
         val primaryKey = databaseReferenceMarker.push().key.toString() // Generate a unique key
-        val markerData = MarkerClass(primaryKey, title, lat, lng, "user_id")
+        val markerData = MarkerClass(primaryKey, title, lat, lng, myUserID)
         databaseReferenceMarker.child(primaryKey).setValue(markerData.toMap()) // Save marker to Firebase
         Toast.makeText(context, "Marker saved", Toast.LENGTH_SHORT).show()
     }
