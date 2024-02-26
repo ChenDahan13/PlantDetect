@@ -50,9 +50,15 @@ class commentAdapter(context: Context, private val commentList: List<Comment>, v
             likeIcon?.text = numberOfLikes.toString()
         }
         likeIcon!!.setOnClickListener {
-            incrementLikes(it, myUser_id)
-            fetchNumberOfLikes(currentComment.getCommentId()) { numberOfLikes ->
-                likeIcon.text = numberOfLikes.toString()
+            isExpert(myUser_id) { isExpert ->
+                if (isExpert) {
+                    incrementLikes(it, myUser_id)
+                    fetchNumberOfLikes(currentComment.getCommentId()) { numberOfLikes ->
+                        likeIcon.text = numberOfLikes.toString()
+                    }
+                } else {
+                    Toast.makeText(context, "Amateurs can't like comments", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -72,6 +78,38 @@ class commentAdapter(context: Context, private val commentList: List<Comment>, v
                 Log.e("fetchNumberOfLikes", "Error fetching number of likes: ${error.message}")
             }
         })
+    }
+    private fun isExpert(user_id: String, callback: (Boolean) -> Unit) {
+        val databaseReferenceA = FirebaseDatabase.getInstance().reference.child("Amateur")
+        val databaseReferenceE = FirebaseDatabase.getInstance().reference.child("Expert")
+
+        databaseReferenceA.orderByChild("user_id").equalTo(user_id)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        callback(false)
+                    } else {
+                        databaseReferenceE.orderByChild("user_id").equalTo(user_id)
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    if (snapshot.exists()) {
+                                        callback(true)
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    // Failed to read value
+                                    Toast.makeText(context, "Failed to read user", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Toast.makeText(context, "Failed to read user", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     fun incrementLikes(view: View, myUser_id: String) {
@@ -152,6 +190,7 @@ class commentAdapter(context: Context, private val commentList: List<Comment>, v
                 }
             })
     }
+
 
 }
 
