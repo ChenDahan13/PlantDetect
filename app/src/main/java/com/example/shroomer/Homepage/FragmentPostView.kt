@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import java.util.LinkedList
 
-class commentAdapter(context: Context, private val commentList: List<Comment>) : ArrayAdapter<Comment>(context, 0, commentList) {
+class commentAdapter(context: Context, private val commentList: List<Comment>, val myUser_id: String) : ArrayAdapter<Comment>(context, 0, commentList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var itemView = convertView
@@ -50,7 +50,7 @@ class commentAdapter(context: Context, private val commentList: List<Comment>) :
             likeIcon?.text = numberOfLikes.toString()
         }
         likeIcon!!.setOnClickListener {
-            incrementLikes(it, currentComment.getUserId())
+            incrementLikes(it, myUser_id)
             fetchNumberOfLikes(currentComment.getCommentId()) { numberOfLikes ->
                 likeIcon.text = numberOfLikes.toString()
             }
@@ -193,7 +193,7 @@ class FragmentPostView : Fragment() {
 
         typeUserCheck(myUser_id.toString()) // Check if the user is an amateur or an expert
         viewPost()
-        showComments()
+        showComments(myUser_id!!)
 
         binding.submitCommentButton.setOnClickListener {
             if (isAmateur) {
@@ -232,7 +232,7 @@ class FragmentPostView : Fragment() {
     }
 
     // Show the comment of the post
-    private fun showComments() {
+    private fun showComments(myUser_id: String) {
         databaseReferenceComment.orderByChild("post_id").equalTo(postID)
             .addValueEventListener(object :
                 ValueEventListener {
@@ -250,7 +250,7 @@ class FragmentPostView : Fragment() {
                             commentList.add(it)
                         }
                     }
-                    updateAdapter(commentList)
+                    updateAdapter(commentList, myUser_id)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -360,8 +360,8 @@ class FragmentPostView : Fragment() {
     }
 
     // Update the adapter with the comments
-    private fun updateAdapter(commentList: List<Comment>) {
-        val adapter = commentAdapter(requireContext(), commentList)
+    private fun updateAdapter(commentList: List<Comment>, myUser_id: String?) {
+        val adapter = commentAdapter(requireContext(), commentList, myUser_id!!)
         val listView = view?.findViewById<ListView>(R.id.comments_list_view)
         listView?.adapter = adapter
     }
