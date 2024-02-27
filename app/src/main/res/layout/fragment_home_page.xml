@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5EE9E"
+    android:background="#B7EDFE"
     android:orientation="vertical"
     tools:context=".Homepage.HomePageAmateur">
 
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="65dp"
-        app:cardBackgroundColor="#F5EE9E"
+        app:cardBackgroundColor="#B7EDFE"
         app:cardCornerRadius="50dp">
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             android:text="Hello Toad !"
-            android:textColor="#F06543"
+            android:textColor="@color/black"
             android:textSize="26dp"
             android:textStyle="bold" />
 

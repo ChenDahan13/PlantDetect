@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5EE9E"
+    android:background="@drawable/signuppage"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="20dp">
@@ -16,9 +16,9 @@
         android:layout_margin="10dp"
         android:hint="Welcome"
         android:padding="15dp"
-        android:textColor="#F06543"
-        android:textColorHighlight="#F06543"
-        android:textColorHint="#4CB944"
+        android:textColor="@color/black"
+        android:textColorHighlight="@color/black"
+        android:textColorHint="@color/black"
         android:textSize="48sp"
         android:textStyle="bold" />
 
@@ -63,10 +63,10 @@
             android:layout_marginTop="0dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:buttonTint="#246EB9"
+            android:buttonTint="@color/black"
             android:checked="false"
             android:text="Remember Me"
-            android:textColor="#246EB9"
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <TextView
@@ -80,7 +80,7 @@
             android:drawablePadding="6dp"
             android:padding="4dp"
             android:text="Forget Password"
-            android:textColor="#F06543"
+            android:textColor="@color/black"
             android:textStyle="bold" />
     </LinearLayout>
 

@@ -10,7 +10,7 @@
         android:id="@+id/post_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#f5ee9e"
+        android:background="#B7EDFE"
         android:orientation="vertical">
 
         <ImageView
@@ -40,7 +40,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#f5ee9e"
+            android:background="#B7EDFE"
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
@@ -48,20 +48,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#f5ee9e">
+                android:background="#B7EDFE">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#f5ee9e">
+                    android:background="#B7EDFE">
 
                     <TextView
                         android:id="@+id/post_title_view"
                         android:layout_width="376dp"
                         android:layout_height="match_parent"
                         android:text="Post Title"
-                        android:textColor="#246eb9"
+                        android:textColor="@color/black"
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
@@ -72,9 +72,9 @@
                         android:layout_height="wrap_content"
                         android:fadingEdge="horizontal|vertical"
                         android:text="owner_user_name"
-                        android:textColor="#246eb9"
+                        android:textColor="@color/black"
                         android:textSize="16dp"
-                        android:background="#f5ee9e"/>
+                        android:background="#C7F1FE"/>
 
 
                 </LinearLayout>
@@ -125,7 +125,7 @@
                     android:textStyle="bold"
                     android:text="Comment"
                     android:id="@+id/comment"
-                    android:textColor="#246eb9"/>
+                    android:textColor="@color/black"/>
 
             </androidx.cardview.widget.CardView>
 

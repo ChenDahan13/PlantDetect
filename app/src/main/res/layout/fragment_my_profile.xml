@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:background="#246EB9"
+        android:background="#B7EDFE"
         android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -25,7 +25,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#4CB944"
+        android:background="#B7EDFE"
         android:orientation="vertical">
 
 
@@ -34,7 +34,7 @@
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            app:cardBackgroundColor="#F5EE9E"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="20dp">
 
             <LinearLayout
@@ -53,7 +53,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Username:"
-                        android:textColor="#F06543"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         tools:ignore="HardcodedText" />
@@ -64,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/my_username"
-                        android:textColor="#F06543"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -78,7 +78,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Email:"
-                        android:textColor="#F06543"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         tools:ignore="HardcodedText" />
@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/my_email"
-                        android:textColor="#F06543"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -103,7 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Level:"
-                        android:textColor="#F06543"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         tools:ignore="HardcodedText" />
@@ -114,7 +114,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/amatauer_expert"
-                        android:textColor="#F06543"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
