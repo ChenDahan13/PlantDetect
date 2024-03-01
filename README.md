@@ -6,10 +6,10 @@ Simply add a picture of a plant and the experts in the app will identify it for 
 ## Features
 * Login and Register - users can create an account and login to the app
 * Post upload - users can upload a post with a picture and a description of what they want to identify
-* Comment on post - experts can comment on a post with the identification of the plant or answer to a question
+* Comment on post - experts can comment on a post with the identification of the plant or answers to a question
 * Like a comment - experts can like a comment
 * Search content of posts by title - users can search for a post by its content
-* Add geo-markers on google map - users can add a marker on the map with a description ot the plants growing in that area
+* Add geo-markers on google map - experts can add a marker on the map with a description ot the plants growing in that area
 ## Technologies
 * Android Studio - this is the IDE used to develop the app
 * Firebase - this is the backend service used to store user data, posts, comments, likes and markers
