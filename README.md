@@ -17,10 +17,10 @@ Simply add a picture of a plant and the experts in the app will identify it for 
 ## Installation
 1. Clone the repository
 2. Change API key to your own 
-3. Build the APK - you need to generate an APK (Android Package) file. You can do this by selecting "Build" from the menu and then "Build Bundle(s) / APK(s)".
-Locate the APK: After the build process is complete, Android Studio will provide you with the location of the generated APK file. You can find it in the "outputs" folder within your project directory.
-Transfer the APK: You can transfer the APK file to your Android device via USB, email, or any other method you prefer.
-Install the APK: On your Android device, navigate to where you transferred the APK file and open it. You may need to enable installation from unknown sources in your device's settings if you haven't done so already.
+3. Build the APK - you need to generate an APK (Android Package) file. You can do this by selecting "Build" from the menu and then "Build Bundle(s) / APK(s)"
+4. Locate the APK - After the build process is complete, Android Studio will provide you with the location of the generated APK file. You can find it in the "outputs" folder within your project directory
+5. Transfer the APK - You can transfer the APK file to your Android device via USB, email, or any other method you prefer
+6. Install the APK - On your Android device, navigate to where you transferred the APK file and open it. You may need to enable installation from unknown sources in your device's settings if you haven't done so already
 
 
 
