@@ -404,40 +404,4 @@ class FragmentPostView : Fragment() {
         val listView = view?.findViewById<ListView>(R.id.comments_list_view)
         listView?.adapter = adapter
     }
-
-//    private fun incrementLikes(comment_id: String) {
-//        val myUserId = activity?.intent?.getStringExtra("my_user_id")
-//        var numberOfLikes = view?.findViewById<TextView>(R.id.number_of_likes)
-//        if (myUserId == null) {
-//            Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//        databaseReferenceComment.orderByChild("comment_id").equalTo(comment_id)
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    for (commentSnapshot in snapshot.children) {
-//                        val comment = commentSnapshot.getValue(Comment::class.java)
-//                        if (comment != null) {
-//                            comment.addLike(myUserId)
-//                            numberOfLikes?.text = comment.getLikeCount().toString()
-//                            databaseReferenceComment.child(comment_id).setValue(comment.toMap())
-//                                .addOnSuccessListener { Toast.makeText(context, "Like added", Toast.LENGTH_SHORT).show() }
-//                                .addOnFailureListener { Toast.makeText(context, "Failed to add like", Toast.LENGTH_SHORT).show() }
-//                        }
-//                    }
-//                }
-//                override fun onCancelled(error: DatabaseError) {
-//                    // Failed to read value
-//                    Toast.makeText(context, "Failed to read comment", Toast.LENGTH_SHORT).show()
-//                }
-//            })
-//    }
-
-
-
-    // Increment the number of likes for the post
-//    fun incrementLikes(view: View) {
-//        val  comment_id = view.tag.toString()
-//        incrementLikes(comment_id)
-//    }
 }

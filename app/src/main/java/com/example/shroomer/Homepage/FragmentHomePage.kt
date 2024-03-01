@@ -42,7 +42,7 @@ class CustomAdapter(context: Context, private var postsList: List<Post>) : Array
 
         // Bind data to views in the layout
         val postPhotoImageView = itemView?.findViewById<CircleImageView>(R.id.postlistphoto)
-//        postPhotoImageView?.setImageBitmap(currentPost.imageBitmap)
+
         loadImageFromUrl(currentPost.imageBitmap, postPhotoImageView)
 
         val titleTextView = itemView?.findViewById<TextView>(R.id.title)
@@ -137,10 +137,10 @@ class FragmentHomePage : Fragment() {
         super.onCreate(savedInstanceState)
 
 
-//        val myUser = arguments?.getParcelable<User>("my_user_parcelable")
+
         val myUserID = activity?.intent?.getStringExtra("my_user_id")
         val myUsername = activity?.intent?.getStringExtra("username")
-        Toast.makeText(context, "Hello "+myUsername, Toast.LENGTH_SHORT).show()
+
         fetchPosts(view)
 
         view.findViewById<TextView>(R.id.hello_user1).text="Hello "+myUsername+" !"
@@ -173,7 +173,7 @@ class FragmentHomePage : Fragment() {
                     }
                 }
                 updateAdapter(postsList)
-                Toast.makeText(requireContext(), "Retrieved ${postsList.size} posts", Toast.LENGTH_SHORT).show()
+
                 // Example: Displaying usernames in Logcat
                 for (title in postTitleList) {
                     Log.d("post title", title)
@@ -206,29 +206,7 @@ class FragmentHomePage : Fragment() {
         })
     }
 
-//        db.collection("Post")
-//            .get()
-//            .addOnSuccessListener { result ->
-//                for (document in result) {
-//                    val title = document.getString("title") ?: ""
-//                    val userId = document.getString("user_id") ?: ""
-//                    val imageUrl = document.getString("imageBitmap") ?: ""
-//                    val postID = document.getString("post_id") ?: ""
-//                    val post = Post(title, userId, imageUrl, postID)
-//                    postsList.add(post)
-//                }
-//                val length = postsList.size
-//                Toast.makeText(requireContext(), "Retrieved $length posts", Toast.LENGTH_SHORT).show()
-//
-//                // Update adapter with postsList after fetching all posts
-//                updateAdapter(postsList)
-//            }
-//            .addOnFailureListener { exception ->
-//                Log.e(TAG, "Error fetching posts", exception)
-//                Toast.makeText(requireContext(), "Error fetching posts", Toast.LENGTH_SHORT).show()
-//                // Handle error
-//            }
-//    }
+
     private fun updateAdapter(postsList: List<Post>) {
         val adapter = CustomAdapter(requireContext(), postsList)
         val listView = view?.findViewById<ListView>(R.id.posts_list_view)

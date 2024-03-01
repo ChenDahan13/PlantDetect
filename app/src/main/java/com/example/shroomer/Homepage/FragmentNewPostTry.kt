@@ -42,7 +42,7 @@ class FragmentNewPostTry : Fragment() {
         storageRef = FirebaseStorage.getInstance().getReference("Images")
         val myUserID = activity?.intent?.getStringExtra("my_user_id")
         val myUsername = activity?.intent?.getStringExtra("username")
-//        Toast.makeText(context, "Hello "+myUserID, Toast.LENGTH_SHORT).show() // for debugging
+
 
         // Click on confirm upload post button
         binding.confirmButtonTry.setOnClickListener{
@@ -80,7 +80,7 @@ class FragmentNewPostTry : Fragment() {
         // Check if the user is logged in
         if (myUserID != null) {
             userID = myUserID ?: ""
-            Toast.makeText(context, "User ID: $userID", Toast.LENGTH_SHORT).show()
+
         } else {
             Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
         }
@@ -94,7 +94,7 @@ class FragmentNewPostTry : Fragment() {
 
                             // Get the download URL
                             val imgUrl = url.toString()
-                            post = Post(title, userID, imgUrl, postID) // TODO!! - Get the userID from the user object
+                            post = Post(title, userID, imgUrl, postID)
 
                             // Add the post to the database
                             databaseReferencePost.child(postID).setValue(post?.toMap())

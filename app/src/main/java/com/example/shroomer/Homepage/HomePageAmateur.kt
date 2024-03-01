@@ -23,7 +23,7 @@ class HomePageAmateur : AppCompatActivity() {
 
         // get Parcelable User
         val myUser: User? = intent.getParcelableExtra("my_user_parcelable")
-        Toast.makeText(this, "Hello "+myUser?.getUsername(), Toast.LENGTH_SHORT).show()
+
 
         val bundle =Bundle()
         bundle.putParcelable("my_user_parcelable",myUser)
@@ -45,7 +45,6 @@ class HomePageAmateur : AppCompatActivity() {
             when(navigationItem.itemId){
                 R.id.bottom_home -> {
                     replaceFragment(fragmentHomePage)
-                    //Log.i("HOME NAVIGATION", savedInstanceState.toString())
                     true
                 }
                 R.id.bottom_upload -> {
@@ -54,9 +53,7 @@ class HomePageAmateur : AppCompatActivity() {
                     true
                 }
                 R.id.bottom_profile ->{
-                    Log.i("MY PROFILE", savedInstanceState.toString())/*
-                    val myProfilePage = Intent(this, MyProfile::class.java) //
-                    startActivity(myProfilePage)*/
+                    Log.i("MY PROFILE", savedInstanceState.toString())
                     replaceFragment(fragmentMyProfile)
                     true
                 }
