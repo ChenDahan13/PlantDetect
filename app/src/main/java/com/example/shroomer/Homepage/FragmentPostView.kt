@@ -341,7 +341,7 @@ class FragmentPostView : Fragment() {
             Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
             return
         }
-        Toast.makeText(context, "User ID: $user_id_comment_creator", Toast.LENGTH_SHORT).show()
+
         val newComment = Comment(commentID, comment, user_id_comment_creator, postID)
         databaseReferenceComment.child(commentID).setValue(newComment.toMap())
             .addOnSuccessListener {

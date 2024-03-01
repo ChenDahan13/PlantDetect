@@ -200,7 +200,6 @@ class mapPage : Fragment(), OnMapReadyCallback {
 
     // Add a simple marker
     private fun addSimpleMarker(title: String, position: com.google.android.gms.maps.model.LatLng) {
-        Toast.makeText(context, "title before: $title", Toast.LENGTH_SHORT).show()
 
         val marker = mGoogleMap?.addMarker(
             com.google.android.gms.maps.model.MarkerOptions()
