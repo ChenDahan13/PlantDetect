@@ -205,7 +205,6 @@ class SignUpActivity : AppCompatActivity() {
             fileReference.downloadUrl.addOnSuccessListener { uri ->
                 // Handle the download URL (URI) as needed
                 pdfUrl = uri.toString()
-                Toast.makeText(this, "File uploaded at "+ pdfUrl, Toast.LENGTH_SHORT).show()
                 // Pass the download URI to the appropriate function
                 // e.g., signUpExpert(username, email, password, downloadUri)
             }.addOnFailureListener { exception ->
