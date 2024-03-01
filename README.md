@@ -5,11 +5,11 @@ It main goals are to allow nature lovers to be safely educated about nature, and
 Simply add a picture of a plant and the experts in the app will identify it for you.
 ## Features
 * Login and Register - users can create an account and login to the app
-* Post upload - users can upload a post with a picture and description
-* Comment on post - users can comment on a post
-* Like a comment - users can like a comment
+* Post upload - users can upload a post with a picture and a description of what they want to identify
+* Comment on post - experts can comment on a post with the identification of the plant or answer to a question
+* Like a comment - experts can like a comment
 * Search content of posts by title - users can search for a post by its content
-* Add geo-markers on google map - users can add a marker on the map with a description
+* Add geo-markers on google map - users can add a marker on the map with a description ot the plants growing in that area
 ## Technologies
 * Android Studio - this is the IDE used to develop the app
 * Firebase - this is the backend service used to store user data, posts, comments, likes and markers
