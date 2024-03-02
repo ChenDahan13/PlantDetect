@@ -90,8 +90,6 @@ class FragmentNewPostTry : Fragment() {
                 .addOnSuccessListener {task ->
                     task.metadata!!.reference!!.downloadUrl
                         .addOnSuccessListener { url ->
-                            Toast.makeText(context, "Image uploaded successfully", Toast.LENGTH_SHORT).show()
-
                             // Get the download URL
                             val imgUrl = url.toString()
                             post = Post(title, userID, imgUrl, postID)
